@@ -1,9 +1,5 @@
 const Anthropic = require("@anthropic-ai/sdk");
 
-const client = new Anthropic.default({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
@@ -60,12 +56,19 @@ List foods toxic or harmful for this specific breed or health condition, plus br
 
 Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
+    console.log("Creating Anthropic client...");
+    const client = new Anthropic.Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+
+    console.log("Calling Claude API...");
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1000,
       messages: [{ role: "user", content: prompt }],
     });
 
+    console.log("Claude responded successfully");
     const responseText = message.content[0]?.type === "text" ? message.content[0].text : "";
 
     return {
@@ -75,6 +78,8 @@ Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
     };
 
   } catch (error) {
+    console.log("ERROR:", error.message);
+    console.log("ERROR STACK:", error.stack);
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },
