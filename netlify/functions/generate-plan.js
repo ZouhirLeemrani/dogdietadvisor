@@ -1,26 +1,26 @@
-import Anthropic from "@anthropic-ai/sdk";
+const Anthropic = require("@anthropic-ai/sdk");
 
-const client = new Anthropic({
+const client = new Anthropic.default({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export default async (request) => {
-  if (request.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers: { "Content-Type": "application/json" },
-    });
+exports.handler = async (event) => {
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: "Method not allowed" }),
+    };
   }
 
   try {
-    const body = await request.json();
+    const body = JSON.parse(event.body);
     const { dogName, breed, age, sex, weight, activity, health, currentFood, budget } = body;
 
     if (!breed || !age) {
-      return new Response(JSON.stringify({ error: "Breed and age are required" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Breed and age are required" }),
+      };
     }
 
     const budgetMap = {
@@ -50,7 +50,7 @@ Please provide a detailed, practical, and friendly response with EXACTLY these 4
 Give daily calorie estimate, ideal macronutrient balance, feeding frequency, portion guidance, and key nutrients this specific breed needs. Be specific and practical.
 
 ### 🏷️ RECOMMENDED FOOD BRANDS
-List 4-6 specific commercially available food brands that match the owner's budget preference (${budgetContext}). For each brand briefly explain WHY it fits this dog's profile (1 sentence). Do NOT mention prices — just recommend the brands. Focus on real brands like Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, etc.
+List 4-6 specific commercially available food brands that match the owner's budget preference (${budgetContext}). For each brand briefly explain WHY it fits this dog's profile (1 sentence). Do NOT mention prices. Focus on real brands like Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, etc.
 
 ### 🏃 LIFESTYLE & EXERCISE GUIDE
 Recommend daily exercise duration, types of activities ideal for this breed and age, mental stimulation ideas, and breed-specific lifestyle tips.
@@ -58,7 +58,7 @@ Recommend daily exercise duration, types of activities ideal for this breed and 
 ### ⚠️ FOODS & RISKS TO AVOID
 List foods toxic or harmful for this specific breed or health condition, plus breed-specific health risks to watch for.
 
-Be warm, direct, and specific. Avoid generic advice. Tailor everything to this exact dog profile.`;
+Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
@@ -68,19 +68,17 @@ Be warm, direct, and specific. Avoid generic advice. Tailor everything to this e
 
     const responseText = message.content[0]?.type === "text" ? message.content[0].text : "";
 
-    return new Response(JSON.stringify({ success: true, plan: responseText }), {
-      status: 200,
+    return {
+      statusCode: 200,
       headers: { "Content-Type": "application/json" },
-    });
+      body: JSON.stringify({ success: true, plan: responseText }),
+    };
 
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to generate plan", details: error.message }), {
-      status: 500,
+    return {
+      statusCode: 500,
       headers: { "Content-Type": "application/json" },
-    });
+      body: JSON.stringify({ error: "Failed to generate plan", details: error.message }),
+    };
   }
-};
-
-export const config = {
-  path: "/api/generate-plan",
 };
