@@ -1,0 +1,8 @@
+{
+  "name": "dogdietadvisor",
+  "version": "1.0.0",
+  "description": "AI-powered dog nutrition advisor",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0"
+  }
+}
