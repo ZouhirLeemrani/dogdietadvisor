@@ -658,6 +658,129 @@
     .hero { padding: 36px 16px 24px; }
     .trust-row { gap: 14px; }
   }
+
+  /* ── PAGES (About, Privacy, Contact, Disclosure) ── */
+  .page-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(27,43,75,0.55);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 40px 20px;
+  }
+
+  .page-overlay.active { display: block; }
+
+  .page-card {
+    background: var(--white);
+    border-radius: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 48px 40px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(27,43,75,0.20);
+  }
+
+  .page-close {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    background: var(--cream);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition: background 0.2s;
+  }
+
+  .page-close:hover { background: var(--sand); }
+
+  .page-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .page-card .page-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+    display: block;
+  }
+
+  .page-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 28px 0 8px;
+  }
+
+  .page-card p {
+    font-size: 0.93rem;
+    line-height: 1.8;
+    color: #3A4D60;
+    margin-bottom: 12px;
+  }
+
+  .page-card ul {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  .page-card ul li {
+    font-size: 0.93rem;
+    line-height: 1.8;
+    color: #3A4D60;
+    margin-bottom: 4px;
+  }
+
+  .page-card a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .page-divider {
+    height: 1px;
+    background: var(--cream);
+    margin: 24px 0;
+  }
+
+  .disclosure-box {
+    background: var(--amber-lite);
+    border: 1px solid rgba(232,146,10,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .disclosure-box p {
+    font-size: 0.88rem;
+    color: #7A5500;
+    margin: 0;
+  }
+
+  .contact-info {
+    background: var(--green-lite);
+    border: 1px solid rgba(74,140,111,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .contact-info p { margin: 0; font-size: 0.93rem; }
+  .contact-info a { color: var(--green-dark); }
+
 </style>
 </head>
 <body>
@@ -827,8 +950,160 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 <strong>DogDietAdvisor.com</strong> — <a href="#">Privacy Policy</a> · <a href="#">Contact</a></p>
+  <p style="margin-bottom:10px;">
+    <a href="#" onclick="showPage('about')">About Us</a> ·
+    <a href="#" onclick="showPage('contact')">Contact</a> ·
+    <a href="#" onclick="showPage('privacy')">Privacy Policy</a> ·
+    <a href="#" onclick="showPage('disclosure')">Affiliate Disclosure</a>
+  </p>
+  <p>© 2026 <strong>DogDietAdvisor.com</strong> — Personalized Food & Nutrition For Your Breed</p>
 </footer>
+
+<!-- ── ABOUT PAGE ── -->
+<div class="page-overlay" id="page-about">
+  <div class="page-card">
+    <button class="page-close" onclick="closePage('about')">✕</button>
+    <h1>About DogDietAdvisor</h1>
+    <span class="page-date">Your dog's nutrition, personalized.</span>
+
+    <p>DogDietAdvisor was built with one simple belief: every dog deserves a nutrition plan as unique as they are. A Golden Retriever puppy has completely different dietary needs than a senior Labrador with joint issues — yet most dog owners receive the same generic advice.</p>
+
+    <p>We built DogDietAdvisor to change that. By combining your dog's specific profile — breed, age, weight, activity level, health concerns, and budget — with advanced nutritional analysis, we generate a personalized plan that actually fits your dog's life.</p>
+
+    <h2>What We Do</h2>
+    <p>DogDietAdvisor analyzes your dog's unique profile and generates:</p>
+    <ul>
+      <li>A personalized daily nutrition and calorie plan</li>
+      <li>Food brand recommendations matched to your dog's needs and your budget</li>
+      <li>A breed-specific lifestyle and exercise guide</li>
+      <li>A clear list of foods and risks to avoid</li>
+    </ul>
+
+    <h2>Our Approach</h2>
+    <p>We believe good nutrition advice should be accessible to every dog owner — not just those who can afford a veterinary nutritionist. DogDietAdvisor is free to use, with a Pro option for unlimited plans and advanced features.</p>
+
+    <div class="page-divider"></div>
+
+    <h2>Important Disclaimer</h2>
+    <p>DogDietAdvisor provides general wellness guidance only. Our recommendations are not a substitute for professional veterinary advice, diagnosis, or treatment. Always consult a licensed veterinarian for medical concerns about your dog.</p>
+
+    <p style="margin-top:20px;font-size:0.85rem;color:var(--muted);">
+      Questions? Reach us at <a href="mailto:hello@dogdietadvisor.com">hello@dogdietadvisor.com</a>
+    </p>
+  </div>
+</div>
+
+<!-- ── CONTACT PAGE ── -->
+<div class="page-overlay" id="page-contact">
+  <div class="page-card">
+    <button class="page-close" onclick="closePage('contact')">✕</button>
+    <h1>Contact Us</h1>
+    <span class="page-date">We'd love to hear from you.</span>
+
+    <p>Have a question about DogDietAdvisor, feedback about a nutrition plan, or a partnership inquiry? Get in touch and we'll get back to you as soon as possible.</p>
+
+    <div class="contact-info">
+      <p>📧 Email us at: <a href="mailto:hello@dogdietadvisor.com"><strong>hello@dogdietadvisor.com</strong></a></p>
+    </div>
+
+    <h2>Common Questions</h2>
+    <p><strong>How do I reset my free plans?</strong><br>Free plans reset when you clear your browser data. For unlimited plans, upgrade to Pro.</p>
+
+    <p><strong>Is the advice from a real vet?</strong><br>No — DogDietAdvisor provides general wellness guidance based on nutritional data. Always consult a licensed veterinarian for medical advice.</p>
+
+    <p><strong>Can I suggest a feature?</strong><br>Absolutely. Email us with your idea — we read every message.</p>
+
+    <p><strong>I found a bug. What do I do?</strong><br>Please email us with a description of what happened and we'll fix it as quickly as possible.</p>
+
+    <div class="page-divider"></div>
+    <p style="font-size:0.85rem;color:var(--muted);">We typically respond within 24–48 hours on business days.</p>
+  </div>
+</div>
+
+<!-- ── PRIVACY POLICY PAGE ── -->
+<div class="page-overlay" id="page-privacy">
+  <div class="page-card">
+    <button class="page-close" onclick="closePage('privacy')">✕</button>
+    <h1>Privacy Policy</h1>
+    <span class="page-date">Last updated: April 2026</span>
+
+    <p>At DogDietAdvisor, we take your privacy seriously. This policy explains what information we collect, how we use it, and your rights.</p>
+
+    <h2>Information We Collect</h2>
+    <p>When you use DogDietAdvisor, we collect:</p>
+    <ul>
+      <li><strong>Dog profile data</strong> you enter (breed, age, weight, health concerns) — used solely to generate your nutrition plan</li>
+      <li><strong>Usage data</strong> — how many plans you've generated, stored locally in your browser</li>
+      <li><strong>Email address</strong> — only if you create an account (optional)</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <ul>
+      <li>To generate your dog's personalized nutrition plan</li>
+      <li>To enforce the free plan limit (stored in your browser, not our servers)</li>
+      <li>To improve our service based on usage patterns</li>
+    </ul>
+
+    <h2>What We Don't Do</h2>
+    <ul>
+      <li>We do not sell your personal data to third parties</li>
+      <li>We do not use your data for advertising</li>
+      <li>We do not store your dog's profile data on our servers beyond the time needed to generate your plan</li>
+    </ul>
+
+    <h2>Cookies & Local Storage</h2>
+    <p>We use browser local storage to remember how many free plans you've used. No tracking cookies are used on this site.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>DogDietAdvisor uses the following third-party services:</p>
+    <ul>
+      <li><strong>Anthropic Claude API</strong> — processes your dog's profile to generate nutrition advice. See <a href="https://anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a>.</li>
+      <li><strong>Netlify</strong> — hosts our website. See <a href="https://netlify.com/privacy" target="_blank">Netlify's Privacy Policy</a>.</li>
+      <li><strong>Amazon Associates / Chewy / Petco</strong> — affiliate partners. Clicking their links may set cookies on their sites.</li>
+    </ul>
+
+    <h2>Your Rights (GDPR)</h2>
+    <p>If you are located in the European Union, you have the right to access, correct, or delete any personal data we hold about you. Contact us at <a href="mailto:hello@dogdietadvisor.com">hello@dogdietadvisor.com</a> to exercise these rights.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>DogDietAdvisor is not directed at children under 13. We do not knowingly collect personal information from children.</p>
+
+    <h2>Contact</h2>
+    <p>For privacy-related questions: <a href="mailto:hello@dogdietadvisor.com">hello@dogdietadvisor.com</a></p>
+  </div>
+</div>
+
+<!-- ── AFFILIATE DISCLOSURE PAGE ── -->
+<div class="page-overlay" id="page-disclosure">
+  <div class="page-card">
+    <button class="page-close" onclick="closePage('disclosure')">✕</button>
+    <h1>Affiliate Disclosure</h1>
+    <span class="page-date">Last updated: April 2026</span>
+
+    <div class="disclosure-box">
+      <p>⚠️ <strong>Important:</strong> DogDietAdvisor participates in affiliate marketing programs. This means we may earn a commission when you click our links and make a purchase — at no extra cost to you.</p>
+    </div>
+
+    <h2>How It Works</h2>
+    <p>When our nutrition plans recommend specific dog food brands, we include links to purchase those products on Amazon, Chewy, and Petco. If you click one of these links and make a purchase, we receive a small commission from the retailer.</p>
+
+    <h2>Our Commitment to Honest Recommendations</h2>
+    <p>Affiliate commissions do not influence our recommendations. Our nutrition plans are generated based solely on your dog's profile — breed, age, weight, health conditions, and budget. We recommend products because they are genuinely suited to your dog, not because of commission rates.</p>
+
+    <h2>Affiliate Programs We Participate In</h2>
+    <ul>
+      <li><strong>Amazon Associates Program</strong> — As an Amazon Associate, DogDietAdvisor earns from qualifying purchases.</li>
+      <li><strong>Chewy Affiliate Program</strong> — We may earn commissions on purchases made through Chewy links.</li>
+      <li><strong>Petco Affiliate Program</strong> — We may earn commissions on purchases made through Petco links.</li>
+    </ul>
+
+    <h2>FTC Compliance</h2>
+    <p>This disclosure is made in accordance with the Federal Trade Commission's guidelines on endorsements and testimonials (16 CFR Part 255). We are committed to transparency with our users.</p>
+
+    <h2>Questions</h2>
+    <p>If you have any questions about our affiliate relationships, contact us at <a href="mailto:hello@dogdietadvisor.com">hello@dogdietadvisor.com</a></p>
+  </div>
+</div>
 
 <script>
   const MAX_FREE_PLANS = 3;
@@ -978,6 +1253,37 @@
   }
 
   updateCounter();
+
+  function showPage(name) {
+    document.getElementById('page-' + name).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePage(name) {
+    document.getElementById('page-' + name).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click
+  document.querySelectorAll('.page-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.page-overlay.active').forEach(el => {
+        el.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
 </script>
 </body>
 </html>
