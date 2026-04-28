@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dog Nutrition Blog – DogDietAdvisor</title>
+<meta name="description" content="Practical, research-backed dog nutrition guides. Breed-specific diet advice, weight management, food comparisons, and lifestyle tips — no fluff.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F;
+    --green: #4A8C6F;
+    --green-dark: #3A7A5E;
+    --green-lite: #EBF5F0;
+    --amber: #E8920A;
+    --amber-lite: #FEF6E8;
+    --cream: #F4F1EC;
+    --white: #FFFFFF;
+    --muted: #7A8999;
+    --text: #2A3D52;
+    --shadow: 0 4px 24px rgba(30,58,95,0.09);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+  }
+
+  header {
+    background: var(--white);
+    border-bottom: 2px solid var(--green-lite);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(30,58,95,0.07);
+  }
+
+  .logo {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--green); }
+
+  .header-cta {
+    background: var(--navy);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .header-cta:hover { background: var(--green); }
+
+  .blog-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A5080 100%);
+    padding: 60px 20px 52px;
+    text-align: center;
+  }
+
+  .blog-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 14px;
+  }
+
+  .blog-hero p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.72);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .blog-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 52px 20px 80px;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 52px;
+  }
+
+  .article-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(30,58,95,0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(30,58,95,0.14);
+  }
+
+  .card-badge {
+    padding: 20px 20px 0;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  .badge-green { background: var(--green-lite); color: var(--green-dark); }
+  .badge-amber { background: var(--amber-lite); color: #7A5500; }
+  .badge-navy { background: #EEF2F7; color: var(--navy); }
+
+  .card-body {
+    padding: 14px 20px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .card-body p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 14px;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--cream);
+    padding-top: 12px;
+  }
+
+  .card-read {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.78rem;
+  }
+
+  .coming-soon-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+    border: 1.5px dashed #D0DDE8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .coming-soon-card .cs-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .coming-soon-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #A0B0C0;
+    line-height: 1.3;
+  }
+
+  .blog-cta {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A5080 100%);
+    border-radius: 16px;
+    padding: 36px 32px;
+    text-align: center;
+    color: white;
+  }
+
+  .blog-cta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  .blog-cta p {
+    font-size: 0.93rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--amber);
+    color: white;
+    padding: 13px 28px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(232,146,10,0.35);
+  }
+
+  .cta-btn:hover {
+    background: #D07808;
+    transform: translateY(-1px);
+  }
+
+  footer {
+    background: var(--white);
+    border-top: 1px solid #E0E8F0;
+    text-align: center;
+    padding: 24px 20px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    header { padding: 12px 16px; }
+    .blog-hero { padding: 44px 16px 36px; }
+    .blog-container { padding: 36px 16px 60px; }
+    .articles-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://dogdietadvisor.com" class="logo">DogDiet<span>Advisor</span></a>
+  <a href="https://dogdietadvisor.com" class="header-cta">Get Free Plan →</a>
+</header>
+
+<div class="blog-hero">
+  <h1>Dog Nutrition Blog</h1>
+  <p>Practical, research-backed guides for dog owners. No fluff, no filler — just what you need to feed your dog right.</p>
+</div>
+
+<div class="blog-container">
+
+  <p class="section-label">📰 Latest Articles</p>
+
+  <div class="articles-grid">
+
+    <!-- Article 1 -->
+    <a href="/blog/best-dog-food-for-golden-retrievers.html" class="article-card">
+      <div class="card-badge">
+        <span class="badge badge-green">Golden Retriever</span>
+      </div>
+      <div class="card-body">
+        <h2>Best Dog Food for Golden Retrievers (2026)</h2>
+        <p>Why Goldens need omega-3s more than any other breed, the calcium mistake that causes permanent joint damage in puppies, and the grain-free warning specific to this breed.</p>
+        <div class="card-meta">
+          <span>📅 April 2026 · 8 min read</span>
+          <span class="card-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Article 2 -->
+    <a href="/blog/overweight-labrador-diet.html" class="article-card">
+      <div class="card-badge">
+        <span class="badge badge-amber">Labrador · Weight</span>
+      </div>
+      <div class="card-body">
+        <h2>What to Feed an Overweight Labrador (Honest Guide)</h2>
+        <p>The Cambridge gene study that explains why Labs are always hungry, the single mistake that kills most Lab diet plans, and an 8-week week-by-week weight loss plan.</p>
+        <div class="card-meta">
+          <span>📅 April 2026 · 9 min read</span>
+          <span class="card-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Coming soon cards -->
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>Best Budget Dog Food That Vets Actually Recommend</h2>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>Senior Dog Diet: What Changes After Age 7</h2>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>German Shepherd Nutrition Guide</h2>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>Dry vs Wet Dog Food: Which Is Actually Better?</h2>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>Signs Your Dog Is Eating the Wrong Food</h2>
+    </div>
+
+    <div class="coming-soon-card">
+      <div class="cs-badge">⏳ Coming soon</div>
+      <h2>Best Dog Food for Sensitive Stomachs</h2>
+    </div>
+
+  </div>
+
+  <div class="blog-cta">
+    <h3>Get Your Dog's Personalized Plan</h3>
+    <p>Stop guessing. Enter your dog's breed, age, weight, and health details and get a nutrition plan tailored to them — with food brand recommendations matched to your budget.</p>
+    <a href="https://dogdietadvisor.com" class="cta-btn">Generate Free Plan →</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <strong>DogDietAdvisor.com</strong> — <a href="https://dogdietadvisor.com">Home</a> · <a href="https://dogdietadvisor.com">Privacy Policy</a> · <a href="https://dogdietadvisor.com">Affiliate Disclosure</a></p>
+</footer>
+
+</body>
+</html>
