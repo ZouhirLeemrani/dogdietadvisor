@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { dogName, breed, age, sex, weight, activity, health, currentFood, budget } = body;
+    const { dogName, breed, age, sex, weight, activity, health, currentFood, budget, email } = body;
 
     if (!breed || !age) {
       return {
@@ -56,20 +56,100 @@ List foods toxic or harmful for this specific breed or health condition, plus br
 
 Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
-    console.log("Creating Anthropic client...");
     const client = new Anthropic.Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
-    console.log("Calling Claude API...");
     const message = await client.messages.create({
       model: "claude-sonnet-4-5",
       max_tokens: 1000,
       messages: [{ role: "user", content: prompt }],
     });
 
-    console.log("Claude responded successfully");
     const responseText = message.content[0]?.type === "text" ? message.content[0].text : "";
+
+    // If email provided: add to Brevo list + send plan email
+    if (email && process.env.BREVO_API_KEY) {
+      const petName = dogName || "your dog";
+
+      // 1. Add contact to Brevo list
+      try {
+        await fetch("https://api.brevo.com/v3/contacts", {
+          method: "POST",
+          headers: {
+            "api-key": process.env.BREVO_API_KEY,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            attributes: { FIRSTNAME: petName, SOURCE: "DogDietAdvisor" },
+            listIds: [2],
+            updateEnabled: true,
+          }),
+        });
+      } catch (e) {
+        console.log("Brevo contact save error:", e.message);
+      }
+
+      // 2. Send the plan to the user's email
+      try {
+        const planHtml = responseText
+          .replace(/### 🍗 DIET & NUTRITION PLAN/g, '<h2 style="color:#1E3A5F;margin-top:28px;">🍗 Diet & Nutrition Plan</h2>')
+          .replace(/### 🏷️ RECOMMENDED FOOD BRANDS/g, '<h2 style="color:#1E3A5F;margin-top:28px;">🏷️ Recommended Food Brands</h2>')
+          .replace(/### 🏃 LIFESTYLE & EXERCISE GUIDE/g, '<h2 style="color:#1E3A5F;margin-top:28px;">🏃 Lifestyle & Exercise Guide</h2>')
+          .replace(/### ⚠️ FOODS & RISKS TO AVOID/g, '<h2 style="color:#1E3A5F;margin-top:28px;">⚠️ Foods & Risks to Avoid</h2>')
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/^[-•]\s+(.+)$/gm, '<li style="margin-bottom:4px;">$1</li>')
+          .replace(/(<li.*<\/li>\n?)+/gs, m => `<ul style="padding-left:20px;margin:8px 0;">${m}</ul>`)
+          .replace(/\n\n+/g, '</p><p style="margin:0 0 10px;">')
+          .replace(/^/, '<p style="margin:0 0 10px;">')
+          .replace(/$/, '</p>');
+
+        await fetch("https://api.brevo.com/v3/smtp/email", {
+          method: "POST",
+          headers: {
+            "api-key": process.env.BREVO_API_KEY,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender: { name: "DogDietAdvisor", email: "hello@dogdietadvisor.com" },
+            to: [{ email }],
+            subject: `🐾 ${petName}'s Personalized Nutrition Plan`,
+            htmlContent: `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:0;background:#F4F1EC;">
+  <div style="background:#1E3A5F;padding:28px 32px;text-align:center;">
+    <h1 style="color:white;margin:0;font-size:22px;font-weight:700;">🐾 DogDietAdvisor</h1>
+    <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:14px;">Personalized nutrition for every breed</p>
+  </div>
+  <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
+    <h2 style="color:#1E3A5F;margin:0 0 6px;font-size:20px;">Here's ${petName}'s plan 🐶</h2>
+    <p style="color:#7A8999;margin:0 0 24px;font-size:14px;">
+      ${breed} · ${age}${weight ? ` · ${weight}kg` : ''}${health && health !== 'None' ? ` · ${health}` : ''}
+    </p>
+    <div style="color:#3A4D60;font-size:15px;line-height:1.7;">
+      ${planHtml}
+    </div>
+    <div style="margin-top:28px;padding:18px 20px;background:#EBF5F0;border-radius:10px;border:1px solid rgba(74,140,111,0.2);">
+      <p style="margin:0 0 12px;font-size:14px;color:#3A7A5E;font-weight:600;">🛒 Shop recommended brands</p>
+      <a href="https://chewy.sjv.io/4arv0n" style="display:inline-block;background:#4A8C6F;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin-right:8px;">Chewy</a>
+      <a href="https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20" style="display:inline-block;background:#E8920A;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Amazon</a>
+    </div>
+    <p style="margin-top:24px;font-size:12px;color:#B0BECA;text-align:center;">
+      ⚠️ This plan is for general wellness guidance only — not a substitute for veterinary advice.<br>
+      <a href="https://dogdietadvisor.com" style="color:#4A8C6F;text-decoration:none;">dogdietadvisor.com</a>
+    </p>
+  </div>
+</body>
+</html>`,
+          }),
+        });
+      } catch (e) {
+        console.log("Brevo email send error:", e.message);
+      }
+    }
 
     return {
       statusCode: 200,
@@ -79,7 +159,6 @@ Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
   } catch (error) {
     console.log("ERROR:", error.message);
-    console.log("ERROR STACK:", error.stack);
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },

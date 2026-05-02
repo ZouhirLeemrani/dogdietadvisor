@@ -837,6 +837,156 @@
 
 
   .logo-link { display:flex; align-items:center; text-decoration:none; }
+
+  /* ── EMAIL CAPTURE MODAL ── */
+  .email-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(27,43,75,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .email-modal-overlay.active { display: flex; }
+
+  .email-modal {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 32px 30px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(27,43,75,0.22);
+    text-align: center;
+    position: relative;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .email-modal-icon { font-size: 2.6rem; margin-bottom: 14px; }
+
+  .email-modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .email-modal p {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .email-modal-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid rgba(30,58,95,0.18);
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    color: var(--navy);
+    background: var(--off-white);
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .email-modal-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(74,140,111,0.12);
+    background: var(--white);
+  }
+
+  .email-modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(74,140,111,0.3);
+    margin-bottom: 10px;
+  }
+  .email-modal-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(74,140,111,0.4);
+  }
+  .email-modal-btn:disabled {
+    background: #B8C4D0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .email-modal-skip {
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .email-modal-skip:hover { color: var(--navy); }
+
+  .email-modal-success {
+    padding: 16px;
+    background: var(--green-lite);
+    border: 1px solid rgba(74,140,111,0.25);
+    border-radius: 10px;
+    font-size: 0.87rem;
+    color: var(--green-dark);
+    font-weight: 600;
+    margin-top: 4px;
+    display: none;
+  }
+
+  /* ── EMAIL BANNER (shown after plan on last free use) ── */
+  .email-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A5080 100%);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .email-banner-text { flex: 1; }
+  .email-banner-text strong {
+    display: block;
+    color: white;
+    font-size: 0.92rem;
+    margin-bottom: 3px;
+  }
+  .email-banner-text span {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.78rem;
+  }
+  .email-banner-btn {
+    padding: 9px 18px;
+    background: var(--amber);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(232,146,10,0.4);
+  }
+  .email-banner-btn:hover { background: #D07808; transform: translateY(-1px); }
 </style>
   <meta name="keywords" content="dog diet advisor, personalized dog food, dog nutrition plan, best dog food by breed, dog food recommendations, dog diet plan, breed specific dog food">
   <meta property="og:title" content="DogDietAdvisor - Personalized Food & Nutrition For Your Breed">
@@ -1026,6 +1176,24 @@
   <p>© 2026 <strong>DogDietAdvisor.com</strong> — Personalized Food & Nutrition For Your Breed</p>
 </footer>
 
+<!-- ── EMAIL CAPTURE MODAL ── -->
+<div class="email-modal-overlay" id="emailModal">
+  <div class="email-modal">
+    <div class="email-modal-icon">📧</div>
+    <h3>Get this plan in your inbox</h3>
+    <p>Enter your email and we'll send <span id="modalPetName">your dog</span>'s full nutrition plan to you — so you never lose it.</p>
+    <input type="email" class="email-modal-input" id="modalEmail" placeholder="your@email.com" />
+    <button class="email-modal-btn" id="modalSubmitBtn" onclick="submitEmailModal()">
+      📨 Send My Plan
+    </button>
+    <div class="email-modal-success" id="modalSuccess">
+      ✅ Plan sent! Check your inbox.
+    </div>
+    <br>
+    <button class="email-modal-skip" onclick="closeEmailModal()">No thanks, skip this</button>
+  </div>
+</div>
+
 <!-- ── ABOUT PAGE ── -->
 <div class="page-overlay" id="page-about">
   <div class="page-card">
@@ -1176,6 +1344,9 @@
   const MAX_FREE_PLANS = 3;
   let selectedBudget = 'Smart Saver';
   let plansUsed = parseInt(localStorage.getItem('dda_plans_used') || '0');
+  let lastGeneratedPlan = '';
+  let lastDogName = '';
+  let emailAlreadyCaptured = !!localStorage.getItem('dda_email');
 
   function updateCounter() {
     const remaining = MAX_FREE_PLANS - plansUsed;
@@ -1262,6 +1433,87 @@
     if (!panel.children.length) {
       panel.innerHTML = `<div class="result-section"><div class="result-content">${text.replace(/\n/g,'<br>')}</div></div>`;
     }
+
+    // Show email banner after results if not captured yet
+    if (!emailAlreadyCaptured) {
+      const banner = document.createElement('div');
+      banner.className = 'email-banner';
+      banner.innerHTML = `
+        <div class="email-banner-text">
+          <strong>📧 Save this plan to your email</strong>
+          <span>Get it sent so you never lose it</span>
+        </div>
+        <button class="email-banner-btn" onclick="openEmailModal()">Send to me</button>`;
+      panel.appendChild(banner);
+    }
+  }
+
+  // ── EMAIL MODAL ──
+  function openEmailModal() {
+    const petName = document.getElementById('dogName').value.trim() || 'your dog';
+    document.getElementById('modalPetName').textContent = petName + "'s";
+    document.getElementById('modalEmail').value = '';
+    document.getElementById('modalSuccess').style.display = 'none';
+    document.getElementById('modalSubmitBtn').disabled = false;
+    document.getElementById('modalSubmitBtn').textContent = '📨 Send My Plan';
+    document.getElementById('emailModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('modalEmail').focus(), 100);
+  }
+
+  function closeEmailModal() {
+    document.getElementById('emailModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  async function submitEmailModal() {
+    const email = document.getElementById('modalEmail').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('modalEmail').focus();
+      document.getElementById('modalEmail').style.borderColor = '#C83C3C';
+      setTimeout(() => document.getElementById('modalEmail').style.borderColor = '', 1500);
+      return;
+    }
+
+    const btn = document.getElementById('modalSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      // Re-call the API with the email so Brevo gets the contact + sends plan
+      await fetch('/api/generate-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dogName:     document.getElementById('dogName').value,
+          breed:       document.getElementById('breed').value.trim(),
+          age:         document.getElementById('age').value,
+          sex:         document.getElementById('sex').value,
+          weight:      document.getElementById('weight').value,
+          activity:    document.getElementById('activity').value,
+          health:      getSelectedTags(),
+          currentFood: document.getElementById('currentFood').value,
+          budget:      selectedBudget,
+          email,
+        })
+      });
+    } catch(e) {
+      console.log('Email send error:', e);
+    }
+
+    // Store email so we don't ask again
+    localStorage.setItem('dda_email', email);
+    emailAlreadyCaptured = true;
+
+    // Show success state
+    document.getElementById('modalSuccess').style.display = 'block';
+    btn.textContent = '✅ Sent!';
+
+    // Remove the banner from results panel
+    const banner = document.querySelector('.email-banner');
+    if (banner) banner.remove();
+
+    setTimeout(() => closeEmailModal(), 2200);
   }
 
   async function generateAdvice() {
@@ -1302,6 +1554,8 @@
       if (!res.ok || !data.success) throw new Error(data.error || 'Failed to generate plan');
       plansUsed++;
       localStorage.setItem('dda_plans_used', plansUsed);
+      lastGeneratedPlan = data.plan;
+      lastDogName = document.getElementById('dogName').value.trim();
       updateCounter();
       renderResults(data.plan);
     } catch(err) {
@@ -1330,7 +1584,7 @@
     document.body.style.overflow = '';
   }
 
-  // Close on overlay click
+  // Close page overlays on background click
   document.querySelectorAll('.page-overlay').forEach(overlay => {
     overlay.addEventListener('click', function(e) {
       if (e.target === this) {
@@ -1340,14 +1594,25 @@
     });
   });
 
+  // Close email modal on background click
+  document.getElementById('emailModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEmailModal();
+  });
+
   // Close on Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
+      closeEmailModal();
       document.querySelectorAll('.page-overlay.active').forEach(el => {
         el.classList.remove('active');
         document.body.style.overflow = '';
       });
     }
+  });
+
+  // Submit email modal on Enter key
+  document.getElementById('modalEmail').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitEmailModal();
   });
 
 </script>
