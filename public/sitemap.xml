@@ -110,4 +110,26 @@
     <priority>0.8</priority>
   </url>
 
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/dog-food-ingredients-to-avoid.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-allergies.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/beagle-weight-management.html</loc>
+    <lastmod>2026-05-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
