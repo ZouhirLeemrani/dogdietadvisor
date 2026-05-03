@@ -1480,7 +1480,7 @@
     btn.textContent = 'Sending…';
 
     try {
-      // Re-call the API with the email so Brevo gets the contact + sends plan
+      // Pass the already-generated plan — no Claude call needed
       await fetch('/api/generate-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1488,13 +1488,10 @@
           dogName:     document.getElementById('dogName').value,
           breed:       document.getElementById('breed').value.trim(),
           age:         document.getElementById('age').value,
-          sex:         document.getElementById('sex').value,
           weight:      document.getElementById('weight').value,
-          activity:    document.getElementById('activity').value,
           health:      getSelectedTags(),
-          currentFood: document.getElementById('currentFood').value,
-          budget:      selectedBudget,
           email,
+          planText:    lastGeneratedPlan,
         })
       });
     } catch(e) {
