@@ -2164,6 +2164,8 @@ ${lastGeneratedPlan
   document.getElementById('proModal').addEventListener('click', function(e) {
     if (e.target === this) closeProModal();
   });
+
+  function showPage(name) {
     document.getElementById('page-' + name).classList.add('active');
     document.body.style.overflow = 'hidden';
   }
