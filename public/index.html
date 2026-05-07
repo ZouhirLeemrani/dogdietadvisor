@@ -2205,8 +2205,6 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   function exportPDF() {
     if (!lastGeneratedPlan) return;
     const dogName = lastDogName || 'your dog';
-    const printWin = window.open('', '_blank');
-
     function mdToHtml(text) {
       const lines = text.split('\n');
       let html = '';
@@ -2287,13 +2285,13 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         .replace(/\*(.+?)\*/g, '<em>$1</em>');
     }
 
-    printWin.document.write(`<!DOCTYPE html>
+    const htmlContent = `<!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8">
 <title>${dogName}'s Nutrition Plan — DogDietAdvisor</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{background:#ffffff !important;color:#1E3A5F !important;}
+  html,body{background:#ffffff;color:#1E3A5F;}
   body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:48px 44px;line-height:1.7;font-size:14px;}
 
   .doc-header{border-top:5px solid #4A8C6F;padding:20px 0 18px;margin-bottom:32px;display:flex;align-items:flex-start;gap:16px;}
@@ -2340,9 +2338,14 @@ ${mdToHtml(lastGeneratedPlan)}
   <span>For wellness guidance only &mdash; not a substitute for veterinary advice</span>
 </div>
 
-</body></html>`);
-    printWin.document.close();
-    setTimeout(() => { printWin.print(); }, 800);
+</body></html>`;
+
+    const blob = new Blob([htmlContent], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    const printWin2 = window.open(url, '_blank');
+    printWin2.onload = function() {
+      setTimeout(() => { printWin2.print(); URL.revokeObjectURL(url); }, 500);
+    };
   }
 
   // Close Pro modal on backdrop click
