@@ -2291,58 +2291,45 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 <html><head>
 <meta charset="UTF-8">
 <title>${dogName}'s Nutrition Plan — DogDietAdvisor</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',sans-serif;max-width:760px;margin:0 auto;padding:48px 44px;color:#1E3A5F;line-height:1.7;font-size:13.5px;background:white;}
+  html,body{background:#ffffff !important;color:#1E3A5F !important;}
+  body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:48px 44px;line-height:1.7;font-size:14px;}
 
-  /* Header */
-  .doc-header{border-top:6px solid #4A8C6F;padding:24px 0 20px;margin-bottom:32px;display:flex;align-items:center;gap:16px;}
-  .doc-header .icon{font-size:2.8rem;line-height:1;}
-  .doc-header h1{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;line-height:1.2;margin-bottom:4px;color:#1E3A5F;}
-  .doc-header .meta{font-size:0.78rem;color:#7A8999;margin-bottom:8px;}
-  .doc-header .badge{display:inline-block;background:#E8920A;color:white;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;}
+  .doc-header{border-top:5px solid #4A8C6F;padding:20px 0 18px;margin-bottom:32px;display:flex;align-items:flex-start;gap:16px;}
+  .doc-header-icon{font-size:2.4rem;line-height:1;margin-top:4px;}
+  .doc-header-title{font-family:Georgia,serif;font-size:1.7rem;font-weight:bold;color:#1E3A5F;line-height:1.2;margin-bottom:4px;}
+  .doc-header-meta{font-size:0.78rem;color:#7A8999;margin-bottom:8px;font-family:Arial,sans-serif;}
+  .doc-header-badge{display:inline-block;background:#E8920A;color:#ffffff;font-size:0.6rem;font-weight:bold;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;font-family:Arial,sans-serif;}
 
-  /* Headings */
-  h1{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:#1E3A5F;margin:32px 0 10px;padding-bottom:8px;border-bottom:2px solid #4A8C6F;}
-  h2{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#1E3A5F;margin:26px 0 10px;padding:10px 14px;background:#EBF5F0;border-left:4px solid #4A8C6F;border-radius:0 6px 6px 0;}
-  h3{font-size:0.82rem;font-weight:700;color:#3A7A5E;margin:20px 0 8px;text-transform:uppercase;letter-spacing:0.8px;}
+  h1{font-family:Georgia,serif;font-size:1.2rem;font-weight:bold;color:#1E3A5F;margin:28px 0 8px;padding-bottom:6px;border-bottom:2px solid #4A8C6F;}
+  h2{font-family:Arial,sans-serif;font-size:0.95rem;font-weight:bold;color:#1E3A5F;margin:22px 0 8px;padding:8px 12px;border-left:4px solid #4A8C6F;background:#f0f9f4;}
+  h3{font-family:Arial,sans-serif;font-size:0.8rem;font-weight:bold;color:#3A7A5E;margin:16px 0 6px;text-transform:uppercase;letter-spacing:0.8px;}
 
-  p{margin-bottom:10px;color:#3A4D60;}
-  strong{color:#1E3A5F;}
+  p{margin-bottom:10px;color:#3A4D60;font-family:Georgia,serif;}
+  strong{color:#1E3A5F;font-weight:bold;}
+  em{font-style:italic;}
 
-  ul,ol{padding-left:22px;margin:8px 0 14px;}
-  li{margin-bottom:5px;color:#3A4D60;}
+  ul,ol{padding-left:22px;margin:8px 0 12px;}
+  li{margin-bottom:5px;color:#3A4D60;font-family:Georgia,serif;}
 
-  hr{border:none;border-top:1px solid #E0EAF2;margin:18px 0;}
+  hr{border:none;border-top:1px solid #dde6ee;margin:16px 0;}
 
-  /* Tables */
-  table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:12.5px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(30,58,95,0.1);}
-  thead{background:#1E3A5F;}
-  th{color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;}
-  td{padding:8px 12px;border-bottom:1px solid #EBF5F0;color:#3A4D60;vertical-align:top;}
-  tr:nth-child(even) td{background:#F5FBF8;}
-  tr:last-child td{border-bottom:none;}
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:12px;font-family:Arial,sans-serif;}
+  th{background:#1E3A5F;color:#ffffff;padding:8px 10px;text-align:left;font-weight:bold;font-size:0.7rem;text-transform:uppercase;}
+  td{padding:7px 10px;border-bottom:1px solid #e8f0f5;color:#3A4D60;vertical-align:top;}
+  tr:nth-child(even) td{background:#f5fbf8;}
 
-  /* Footer */
-  .doc-footer{margin-top:48px;padding-top:16px;border-top:2px solid #EBF5F0;display:flex;justify-content:space-between;font-size:0.7rem;color:#B0BECA;}
-
-  @media print{
-    body{padding:24px;}
-    h2{page-break-after:avoid;}
-    table{page-break-inside:avoid;}
-    thead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .doc-header .badge{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
+  .doc-footer{margin-top:40px;padding-top:14px;border-top:1px solid #dde6ee;display:flex;justify-content:space-between;font-size:0.7rem;color:#aabbcc;font-family:Arial,sans-serif;}
 </style>
 </head><body>
 
 <div class="doc-header">
-  <div class="icon">🐾</div>
+  <div class="doc-header-icon">🐾</div>
   <div>
-    <h1>${dogName}'s Personalized Nutrition Plan</h1>
-    <div class="meta">Generated by DogDietAdvisor.com · ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</div>
-    <div class="badge">⭐ Pro Plan</div>
+    <div class="doc-header-title">${dogName}'s Personalized Nutrition Plan</div>
+    <div class="doc-header-meta">Generated by DogDietAdvisor.com &middot; ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</div>
+    <div class="doc-header-badge">&#11088; Pro Plan</div>
   </div>
 </div>
 
@@ -2350,7 +2337,7 @@ ${mdToHtml(lastGeneratedPlan)}
 
 <div class="doc-footer">
   <span>DogDietAdvisor.com</span>
-  <span>For wellness guidance only — not a substitute for veterinary advice</span>
+  <span>For wellness guidance only &mdash; not a substitute for veterinary advice</span>
 </div>
 
 </body></html>`);
