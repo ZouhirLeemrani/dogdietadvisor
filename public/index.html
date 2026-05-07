@@ -2297,11 +2297,11 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   body{font-family:'Inter',sans-serif;max-width:760px;margin:0 auto;padding:48px 44px;color:#1E3A5F;line-height:1.7;font-size:13.5px;background:white;}
 
   /* Header */
-  .doc-header{background:linear-gradient(135deg,#1E3A5F 0%,#2A5080 100%);color:white;padding:28px 32px;border-radius:12px;margin-bottom:36px;display:flex;align-items:center;gap:20px;}
+  .doc-header{background:linear-gradient(135deg,#1E3A5F 0%,#2A5080 100%);color:white;padding:28px 32px;border-radius:12px;margin-bottom:36px;display:flex;align-items:center;gap:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .doc-header .icon{font-size:3rem;line-height:1;}
-  .doc-header h1{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;line-height:1.2;margin-bottom:6px;}
-  .doc-header .meta{font-size:0.78rem;color:rgba(255,255,255,0.7);margin-bottom:8px;}
-  .doc-header .badge{display:inline-block;background:#E8920A;color:white;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;}
+  .doc-header h1{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;line-height:1.2;margin-bottom:6px;color:white !important;}
+  .doc-header .meta{font-size:0.78rem;color:rgba(255,255,255,0.85);margin-bottom:8px;}
+  .doc-header .badge{display:inline-block;background:#E8920A;color:white;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 
   /* Headings */
   h1{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:#1E3A5F;margin:32px 0 10px;padding-bottom:8px;border-bottom:2px solid #4A8C6F;}
@@ -2328,10 +2328,12 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   .doc-footer{margin-top:48px;padding-top:16px;border-top:2px solid #EBF5F0;display:flex;justify-content:space-between;font-size:0.7rem;color:#B0BECA;}
 
   @media print{
-    body{padding:24px;}
-    .doc-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    thead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    h2{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{padding:24px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .doc-header{background:#1E3A5F !important;color:white !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .doc-header h1{color:white !important;}
+    thead{background:#1E3A5F !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    th{color:white !important;}
+    h2{background:#EBF5F0 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     h2{page-break-after:avoid;}
     table{page-break-inside:avoid;}
   }
