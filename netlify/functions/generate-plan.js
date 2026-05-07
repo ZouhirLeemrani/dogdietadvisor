@@ -177,14 +177,16 @@ Include:
 Be precise, clinical, and actionable. Use real measurements and specific guidance throughout.`;
 
     const prompt   = isPro ? proPrompt   : freePrompt;
-    const maxTok   = isPro ? 2000        : 1000;
+    const maxTok   = isPro ? 1500        : 1000;
 
     const client = new Anthropic.Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
+    const model = isPro ? "claude-haiku-4-5-20251001" : "claude-haiku-4-5-20251001";
+
     const message = await client.messages.create({
-      model: "claude-sonnet-4-5",
+      model: model,
       max_tokens: maxTok,
       messages: [{ role: "user", content: prompt }],
     });
