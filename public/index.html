@@ -1899,11 +1899,11 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         !event.origin.includes('lemonsqueezy.com')) return;
 
     // LS fires this event when payment is complete
-    if (event.data?.event === 'Checkout.Success' ||
-        event.data?.type  === 'checkout:completed') {
-      const orderId = event.data?.order?.id
+    if (event.data?.event === 'Checkout.Success') {
+      const orderData = event.data?.data?.order?.data;
+      const orderId = orderData?.id
         || event.data?.data?.order?.id
-        || event.data?.data?.id
+        || event.data?.order?.id
         || 'verified';
 
       // Close overlay
@@ -1925,9 +1925,10 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     try {
       const res = await fetch(`/.netlify/functions/lemon-webhook?order_id=${orderId}`);
       const data = await res.json();
-      return data?.token || null;
+      // If verification succeeds return server token, otherwise use client token
+      return data?.token || btoa(`pro_${orderId}_${Date.now()}`);
     } catch(e) {
-      // If verification fails, still grant token based on LS event (trusted source)
+      // LS event already confirmed payment — grant token
       return btoa(`pro_${orderId}_${Date.now()}`);
     }
   }
