@@ -1888,7 +1888,8 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   function goToCheckout() {
     closeProModal();
     // Use LemonSqueezy overlay — keeps user on page, fires JS event on payment
-    const checkoutUrl = `https://${LS_STORE_SUBDOMAIN}.lemonsqueezy.com/checkout/buy/${LS_VARIANT_ID}?embed=1`;
+    const checkoutUrl = `https://${LS_STORE_SUBDOMAIN}.lemonsqueezy.com/checkout/buy/${LS_VARIANT_ID}?embed=1&media=0&logo=0`;
+    window.createLemonSqueezy?.();
     window.LemonSqueezy?.Url?.Open(checkoutUrl);
   }
 
