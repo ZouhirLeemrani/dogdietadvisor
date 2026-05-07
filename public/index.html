@@ -2207,180 +2207,156 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     const dogName = lastDogName || 'your dog';
     const printWin = window.open('', '_blank');
 
-    // Convert markdown to clean HTML
     function mdToHtml(text) {
-      return text
-        // Tables: convert | col | col | rows to HTML tables
-        .replace(/(\|.+\|\n?)+/g, match => {
-          const rows = match.trim().split('\n').filter(r => r.trim() && !r.match(/^\|[-\s|]+\|$/));
-          if (rows.length === 0) return '';
-          const tableRows = rows.map((row, i) => {
-            const cells = row.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
-            const tag = i === 0 ? 'th' : 'td';
-            return `<tr>${cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('')}</tr>`;
-          }).join('');
-          return `<table>${tableRows}</table>`;
-        })
+      const lines = text.split('\n');
+      let html = '';
+      let i = 0;
+
+      while (i < lines.length) {
+        const line = lines[i];
+
+        // Table detection
+        if (line.trim().startsWith('|') && lines[i+1] && lines[i+1].trim().match(/^\|[-\s|]+\|$/)) {
+          const headers = line.split('|').filter((c,idx,a) => idx>0 && idx<a.length-1).map(c=>c.trim());
+          i += 2; // skip separator
+          let tableHtml = `<table><thead><tr>${headers.map(h=>`<th>${h.replace(/\*\*(.+?)\*\*/g,'$1')}</th>`).join('')}</tr></thead><tbody>`;
+          while (i < lines.length && lines[i].trim().startsWith('|')) {
+            const cells = lines[i].split('|').filter((c,idx,a) => idx>0 && idx<a.length-1).map(c=>c.trim().replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'));
+            tableHtml += `<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+            i++;
+          }
+          tableHtml += '</tbody></table>';
+          html += tableHtml;
+          continue;
+        }
+
         // H1
-        .replace(/^#\s+(.+)$/gm, '<h1>$1</h1>')
-        // H2
-        .replace(/^##\s+(.+)$/gm, '<h2>$1</h2>')
+        if (line.match(/^#\s+/)) {
+          html += `<h1>${line.replace(/^#\s+/,'')}</h1>`;
+          i++; continue;
+        }
+        // H2 (with optional emoji)
+        if (line.match(/^##\s+/)) {
+          html += `<h2>${line.replace(/^##\s+/,'')}</h2>`;
+          i++; continue;
+        }
         // H3
-        .replace(/^###\s+(.+)$/gm, '<h3>$1</h3>')
-        // Bold
+        if (line.match(/^###\s+/)) {
+          html += `<h3>${line.replace(/^###\s+/,'')}</h3>`;
+          i++; continue;
+        }
+        // HR
+        if (line.trim() === '---') {
+          html += '<hr>';
+          i++; continue;
+        }
+        // Bullet
+        if (line.match(/^[-•]\s+/)) {
+          let listHtml = '<ul>';
+          while (i < lines.length && lines[i].match(/^[-•]\s+/)) {
+            listHtml += `<li>${fmt(lines[i].replace(/^[-•]\s+/,''))}</li>`;
+            i++;
+          }
+          listHtml += '</ul>';
+          html += listHtml;
+          continue;
+        }
+        // Numbered list
+        if (line.match(/^\d+\.\s+/)) {
+          let listHtml = '<ol>';
+          while (i < lines.length && lines[i].match(/^\d+\.\s+/)) {
+            listHtml += `<li>${fmt(lines[i].replace(/^\d+\.\s+/,''))}</li>`;
+            i++;
+          }
+          listHtml += '</ol>';
+          html += listHtml;
+          continue;
+        }
+        // Empty line
+        if (line.trim() === '') { i++; continue; }
+        // Paragraph
+        html += `<p>${fmt(line)}</p>`;
+        i++;
+      }
+      return html;
+    }
+
+    function fmt(t) {
+      return t
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        // Italic
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        // Horizontal rule
-        .replace(/^---+$/gm, '<hr>')
-        // Bullet points
-        .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
-        // Numbered lists
-        .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
-        // Wrap consecutive list items
-        .replace(/(<li>[\s\S]+?<\/li>)(\n<li>[\s\S]+?<\/li>)*/g, m => `<ul>${m}</ul>`)
-        // Paragraphs
-        .replace(/\n\n+/g, '</p><p>')
-        .replace(/^(?!<)(.+)$/gm, (m) => m.startsWith('<') ? m : m)
-        // Clean up
-        .replace(/\n/g, '<br>');
+        .replace(/\*(.+?)\*/g, '<em>$1</em>');
     }
 
     printWin.document.write(`<!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8">
-<title>DogDietAdvisor — ${dogName}'s Plan</title>
+<title>${dogName}'s Nutrition Plan — DogDietAdvisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;max-width:760px;margin:0 auto;padding:48px 44px;color:#1E3A5F;line-height:1.7;font-size:13.5px;background:white;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* Header */
+  .doc-header{background:linear-gradient(135deg,#1E3A5F 0%,#2A5080 100%);color:white;padding:28px 32px;border-radius:12px;margin-bottom:36px;display:flex;align-items:center;gap:20px;}
+  .doc-header .icon{font-size:3rem;line-height:1;}
+  .doc-header h1{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;line-height:1.2;margin-bottom:6px;}
+  .doc-header .meta{font-size:0.78rem;color:rgba(255,255,255,0.7);margin-bottom:8px;}
+  .doc-header .badge{display:inline-block;background:#E8920A;color:white;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;}
 
-  body {
-    font-family: 'DM Sans', Arial, sans-serif;
-    max-width: 750px;
-    margin: 0 auto;
-    padding: 48px 40px;
-    color: #1E3A5F;
-    line-height: 1.7;
-    font-size: 14px;
-  }
+  /* Headings */
+  h1{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:#1E3A5F;margin:32px 0 10px;padding-bottom:8px;border-bottom:2px solid #4A8C6F;}
+  h2{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#1E3A5F;margin:26px 0 10px;padding:10px 14px;background:#EBF5F0;border-left:4px solid #4A8C6F;border-radius:0 6px 6px 0;}
+  h3{font-size:0.82rem;font-weight:700;color:#3A7A5E;margin:20px 0 8px;text-transform:uppercase;letter-spacing:0.8px;}
 
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-bottom: 24px;
-    border-bottom: 3px solid #4A8C6F;
-    margin-bottom: 32px;
-  }
+  p{margin-bottom:10px;color:#3A4D60;}
+  strong{color:#1E3A5F;}
 
-  .header-icon { font-size: 2.5rem; }
+  ul,ol{padding-left:22px;margin:8px 0 14px;}
+  li{margin-bottom:5px;color:#3A4D60;}
 
-  .header-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.9rem;
-    font-weight: 900;
-    color: #1E3A5F;
-    line-height: 1.2;
-  }
+  hr{border:none;border-top:1px solid #E0EAF2;margin:18px 0;}
 
-  .header-text .subtitle {
-    font-size: 0.8rem;
-    color: #7A8999;
-    margin-top: 4px;
-  }
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:12.5px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(30,58,95,0.1);}
+  thead{background:#1E3A5F;}
+  th{color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;}
+  td{padding:8px 12px;border-bottom:1px solid #EBF5F0;color:#3A4D60;vertical-align:top;}
+  tr:nth-child(even) td{background:#F5FBF8;}
+  tr:last-child td{border-bottom:none;}
 
-  .pro-badge {
-    display: inline-block;
-    background: #E8920A;
-    color: white;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 2px 10px;
-    border-radius: 10px;
-    margin-top: 6px;
-  }
+  /* Footer */
+  .doc-footer{margin-top:48px;padding-top:16px;border-top:2px solid #EBF5F0;display:flex;justify-content:space-between;font-size:0.7rem;color:#B0BECA;}
 
-  h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: #1E3A5F; margin: 28px 0 12px; }
-  h2 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: #1E3A5F; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #EBF5F0; }
-  h3 { font-size: 0.95rem; font-weight: 700; color: #3A7A5E; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  p { margin-bottom: 12px; color: #3A4D60; }
-
-  ul { padding-left: 20px; margin: 10px 0 14px; }
-  li { margin-bottom: 6px; color: #3A4D60; }
-
-  strong { color: #1E3A5F; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0 20px;
-    font-size: 13px;
-  }
-
-  th {
-    background: #1E3A5F;
-    color: white;
-    padding: 8px 12px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-  }
-
-  td {
-    padding: 8px 12px;
-    border-bottom: 1px solid #EBF5F0;
-    color: #3A4D60;
-    vertical-align: top;
-  }
-
-  tr:nth-child(even) td { background: #F8FDFB; }
-
-  hr { border: none; border-top: 1px solid #EBF5F0; margin: 20px 0; }
-
-  .footer {
-    margin-top: 48px;
-    padding-top: 16px;
-    border-top: 2px solid #EBF5F0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.72rem;
-    color: #B0BECA;
-  }
-
-  @media print {
-    body { padding: 20px; }
-    h2 { page-break-after: avoid; }
+  @media print{
+    body{padding:24px;}
+    .doc-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    thead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    h2{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    h2{page-break-after:avoid;}
+    table{page-break-inside:avoid;}
   }
 </style>
 </head><body>
 
-<div class="header">
-  <div class="header-icon">🐾</div>
-  <div class="header-text">
-    <h1>${dogName}'s Nutrition Plan</h1>
-    <div class="subtitle">Generated by DogDietAdvisor.com</div>
-    <div class="pro-badge">⭐ Pro Plan</div>
+<div class="doc-header">
+  <div class="icon">🐾</div>
+  <div>
+    <h1>${dogName}'s Personalized Nutrition Plan</h1>
+    <div class="meta">Generated by DogDietAdvisor.com · ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</div>
+    <div class="badge">⭐ Pro Plan</div>
   </div>
 </div>
 
-<div>${mdToHtml(lastGeneratedPlan)}</div>
+${mdToHtml(lastGeneratedPlan)}
 
-<div class="footer">
+<div class="doc-footer">
   <span>DogDietAdvisor.com</span>
-  <span>For wellness guidance only — not veterinary advice</span>
-  <span>${new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'})}</span>
+  <span>For wellness guidance only — not a substitute for veterinary advice</span>
 </div>
 
 </body></html>`);
     printWin.document.close();
-    setTimeout(() => { printWin.print(); }, 600);
+    setTimeout(() => { printWin.print(); }, 800);
   }
 
   // Close Pro modal on backdrop click
