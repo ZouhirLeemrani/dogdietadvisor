@@ -600,6 +600,347 @@
     box-shadow: 0 6px 20px rgba(232,146,10,0.4);
   }
 
+  /* ── PRO UPGRADE MODAL ── */
+  .pro-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(27,43,75,0.65);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .pro-modal-overlay.active { display: flex; }
+
+  .pro-modal {
+    background: var(--white);
+    border-radius: 22px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 24px 80px rgba(27,43,75,0.28);
+    overflow: hidden;
+    animation: fadeUp 0.3s ease both;
+    position: relative;
+  }
+
+  .pro-modal-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A5080 100%);
+    padding: 28px 30px 22px;
+    text-align: center;
+  }
+
+  .pro-modal-header .pro-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(232,146,10,0.2);
+    border: 1px solid rgba(232,146,10,0.5);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .pro-modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .pro-modal-header p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .pro-modal-price {
+    text-align: center;
+    margin: 20px 0 14px;
+  }
+  .pro-modal-price .price-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .pro-modal-price .price-period {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* comparison table */
+  .pro-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin: 0 0 18px;
+  }
+  .pro-compare-table th {
+    padding: 8px 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 2px solid var(--cream);
+  }
+  .pro-compare-table th:first-child { text-align: left; color: var(--muted); }
+  .pro-compare-table th.col-free { text-align: center; color: var(--muted); }
+  .pro-compare-table th.col-pro  { text-align: center; color: var(--amber); }
+
+  .pro-compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(30,58,95,0.06);
+    color: #3A4D60;
+    vertical-align: middle;
+  }
+  .pro-compare-table td:first-child { font-weight: 500; }
+  .pro-compare-table td.col-free,
+  .pro-compare-table td.col-pro   { text-align: center; }
+  .pro-compare-table td.col-pro   { color: var(--green-dark); font-weight: 600; }
+  .pro-compare-table .check-green { color: var(--green); font-size: 1.1rem; }
+  .pro-compare-table .check-no    { color: #C0C8D2; }
+  .pro-compare-table tr.highlight-row { background: rgba(74,140,111,0.05); }
+
+  .pro-modal-body { padding: 6px 26px 24px; }
+
+  .pro-cta-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--amber) 0%, #D07808 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 18px rgba(232,146,10,0.35);
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+  }
+  .pro-cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 22px rgba(232,146,10,0.5);
+  }
+
+  .pro-modal-fine {
+    font-size: 0.74rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.55;
+  }
+
+  .pro-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .pro-modal-close:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── HOMEPAGE PRICING SECTION ── */
+  .pricing-section {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto 48px;
+    padding: 0 20px;
+  }
+
+  .pricing-section-title {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .pricing-section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.65rem;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .pricing-section-title p {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  @media (max-width: 560px) {
+    .pricing-cards { grid-template-columns: 1fr; }
+  }
+
+  .pricing-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 28px 24px;
+    border: 1.5px solid rgba(30,58,95,0.10);
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    border-color: var(--amber);
+    box-shadow: 0 8px 30px rgba(232,146,10,0.20);
+  }
+
+  .pricing-card .card-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--amber);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  .pricing-card .plan-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .pricing-card .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .pricing-card .plan-period {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+  }
+
+  .pricing-card ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.84rem;
+    color: #3A4D60;
+    margin-bottom: 8px;
+    line-height: 1.45;
+  }
+
+  .pricing-card ul li .li-icon {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    margin-top: 1px;
+  }
+
+  .pricing-card .plan-btn {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .pricing-card .plan-btn.free-btn {
+    background: var(--green-lite);
+    color: var(--green-dark);
+    border: 1.5px solid rgba(74,140,111,0.3);
+  }
+
+  .pricing-card .plan-btn.free-btn:hover {
+    background: var(--green);
+    color: white;
+  }
+
+  .pricing-card .plan-btn.pro-btn {
+    background: linear-gradient(135deg, var(--amber) 0%, #D07808 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(232,146,10,0.3);
+  }
+
+  .pricing-card .plan-btn.pro-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(232,146,10,0.45);
+  }
+
+  /* ── PRO UNLOCKED BADGE in counter ── */
+  .plan-counter.pro-active {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A5080 100%);
+    border-color: transparent;
+    color: white;
+  }
+
+  /* ── PDF EXPORT BUTTON ── */
+  .pdf-export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 14px;
+    box-shadow: 0 3px 10px rgba(30,58,95,0.25);
+  }
+  .pdf-export-btn:hover {
+    background: #162D4A;
+    transform: translateY(-1px);
+  }
+
   /* ── DISCLAIMER ── */
   .disclaimer {
     position: relative;
@@ -1189,6 +1530,47 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   <p>⚠️ DogDietAdvisor provides general wellness guidance only — not veterinary medical advice. Always consult a licensed veterinarian for medical concerns, diagnoses, or treatment decisions.</p>
 </div>
 
+<!-- PRICING SECTION (always visible) -->
+<section class="pricing-section">
+  <div class="pricing-section-title">
+    <h2>Simple, honest pricing</h2>
+    <p>Start free, upgrade when you're ready for more.</p>
+  </div>
+  <div class="pricing-cards">
+    <!-- FREE -->
+    <div class="pricing-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-period">forever</div>
+      <ul>
+        <li><span class="li-icon">✅</span> 3 lifetime plans</li>
+        <li><span class="li-icon">✅</span> All dog breeds supported</li>
+        <li><span class="li-icon">✅</span> Standard nutrition plan</li>
+        <li><span class="li-icon">✅</span> Food brand recommendations</li>
+        <li><span class="li-icon" style="color:#C0C8D2;">✗</span> PDF export</li>
+        <li><span class="li-icon" style="color:#C0C8D2;">✗</span> Extended plan + supplements</li>
+      </ul>
+      <a href="#" class="plan-btn free-btn" onclick="document.getElementById('breed').focus();return false;">Get started free</a>
+    </div>
+    <!-- PRO -->
+    <div class="pricing-card featured">
+      <div class="card-badge">Most popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$5.99</div>
+      <div class="plan-period">per month · cancel anytime</div>
+      <ul>
+        <li><span class="li-icon">✅</span> <strong>Unlimited</strong> plans</li>
+        <li><span class="li-icon">✅</span> All dog breeds supported</li>
+        <li><span class="li-icon">✅</span> Extended plan + supplement recs</li>
+        <li><span class="li-icon">✅</span> Gram-level portion guidance</li>
+        <li><span class="li-icon">✅</span> <strong>PDF export</strong> for every plan</li>
+        <li><span class="li-icon">✅</span> Priority support</li>
+      </ul>
+      <button class="plan-btn pro-btn" onclick="showProModal()">Upgrade to Pro — $5.99/mo</button>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <p style="margin-bottom:10px;">
@@ -1200,6 +1582,70 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   </p>
   <p>© 2026 <strong>DogDietAdvisor.com</strong> — Personalized Food & Nutrition For Your Breed</p>
 </footer>
+
+<!-- ── PRO UPGRADE MODAL ── -->
+<div class="pro-modal-overlay" id="proModal">
+  <div class="pro-modal">
+    <button class="pro-modal-close" onclick="closeProModal()" aria-label="Close">✕</button>
+
+    <div class="pro-modal-header">
+      <div class="pro-badge">⭐ Upgrade</div>
+      <h2>Unlock DogDietAdvisor Pro</h2>
+      <p>Unlimited plans, richer nutrition detail, and PDF exports.</p>
+    </div>
+
+    <div class="pro-modal-body">
+      <div class="pro-modal-price">
+        <span class="price-main">$5.99</span>
+        <span class="price-period"> / month · cancel anytime</span>
+      </div>
+
+      <table class="pro-compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="col-free">Free</th>
+            <th class="col-pro">Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Plans</td>
+            <td class="col-free">3 lifetime</td>
+            <td class="col-pro">Unlimited ✓</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Extended plan + supplements</td>
+            <td class="col-free"><span class="check-no">✗</span></td>
+            <td class="col-pro"><span class="check-green">✓</span></td>
+          </tr>
+          <tr>
+            <td>Gram-level portions</td>
+            <td class="col-free"><span class="check-no">✗</span></td>
+            <td class="col-pro"><span class="check-green">✓</span></td>
+          </tr>
+          <tr class="highlight-row">
+            <td>PDF export</td>
+            <td class="col-free"><span class="check-no">✗</span></td>
+            <td class="col-pro"><span class="check-green">✓</span></td>
+          </tr>
+          <tr>
+            <td>Price</td>
+            <td class="col-free">Free</td>
+            <td class="col-pro">$5.99/mo</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="pro-cta-btn" onclick="goToCheckout()">
+        🐾 Start Pro — $5.99/month
+      </button>
+      <div class="pro-modal-fine">
+        Secure checkout via Lemon Squeezy · Cancel any time · Instant unlock
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── EMAIL CAPTURE MODAL ── -->
 <div class="email-modal-overlay" id="emailModal">
@@ -1366,9 +1812,23 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 </div>
 
 <script>
+  // ── Lemon Squeezy config (TEST MODE) ──────────────────────────────────────
+  // Replace these with your real test values from the LS dashboard.
+  // VARIANT_ID is the numeric ID of your $5.99/mo variant.
+  const LS_STORE_SUBDOMAIN = 'dogdietadvisor';   // store subdomain
+  const LS_VARIANT_ID      = '1621835';           // variant ID (store ID: 1033993)
+
+  // After payment LS redirects to: https://yourdomain.com/?order_id=xxx
+  // We pick that up on load and call our Netlify function to verify + get token.
+
+  // ── Pro state ─────────────────────────────────────────────────────────────
+  const PRO_TOKEN_KEY = 'dda_pro_token';
+  let isPro = !!localStorage.getItem(PRO_TOKEN_KEY);
+
+  // ── Free-plan counter ─────────────────────────────────────────────────────
   const MAX_FREE_PLANS = 3;
   let selectedBudget = 'Smart Saver';
-  let plansUsed = parseInt(localStorage.getItem('dda_plans_used') || '0');
+  let plansUsed = isPro ? 0 : parseInt(localStorage.getItem('dda_plans_used') || '0');
   let lastGeneratedPlan = '';
   let lastDogName = '';
   let emailAlreadyCaptured = !!localStorage.getItem('dda_email');
@@ -1378,6 +1838,15 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     const counter = document.getElementById('planCounter');
     const btn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
+
+    if (isPro) {
+      counter.className = 'plan-counter pro-active';
+      counter.innerHTML = '⭐ <strong>Pro plan active</strong> — Unlimited plans';
+      btn.disabled = false;
+      btnText.textContent = "🐾 Generate My Dog's Plan";
+      return;
+    }
+
     if (remaining <= 0) {
       counter.className = 'plan-counter limit';
       counter.innerHTML = '🔒 You have used all <strong>3 free plans</strong>';
@@ -1398,9 +1867,56 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       <div class="upgrade-card">
         <div style="font-size:2.4rem;margin-bottom:12px;">🔓</div>
         <h3>Upgrade to Pro</h3>
-        <p>You've used all 3 free plans. Upgrade to Pro for unlimited plans, full plan history, and PDF downloads.</p>
-        <button class="upgrade-btn" onclick="alert('Subscription coming soon!')">Upgrade to Pro — $5.99/month</button>
+        <p>You've used all 3 free plans. Upgrade to Pro for unlimited plans, extended plans with supplement recommendations, and PDF downloads.</p>
+        <button class="upgrade-btn" onclick="showProModal()">Upgrade to Pro — $5.99/month</button>
       </div>`;
+  }
+
+  // ── Pro modal ─────────────────────────────────────────────────────────────
+  function showProModal() {
+    document.getElementById('proModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProModal() {
+    document.getElementById('proModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function goToCheckout() {
+    // Build the LS checkout URL with a redirect_url so we can verify after payment
+    const redirectUrl = encodeURIComponent(window.location.origin + window.location.pathname + '?order_id={order_id}');
+    const checkoutUrl = `https://${LS_STORE_SUBDOMAIN}.lemonsqueezy.com/checkout/buy/${LS_VARIANT_ID}?checkout[redirect_url]=${redirectUrl}`;
+    window.open(checkoutUrl, '_blank');
+  }
+
+  // ── Verify order after LS redirect ──────────────────────────────────────
+  async function checkForOrderRedirect() {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    if (!orderId) return;
+
+    // Remove query string from URL without reload
+    window.history.replaceState({}, '', window.location.pathname);
+
+    try {
+      const res = await fetch(`/.netlify/functions/lemon-webhook?order_id=${orderId}`);
+      const data = await res.json();
+      if (data.ok && data.token) {
+        localStorage.setItem(PRO_TOKEN_KEY, data.token);
+        isPro = true;
+        plansUsed = 0;
+        updateCounter();
+        // Brief success toast
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1E3A5F;color:white;padding:14px 22px;border-radius:12px;font-weight:700;font-size:0.9rem;z-index:9999;box-shadow:0 6px 24px rgba(30,58,95,0.3);animation:fadeUp 0.3s ease both';
+        toast.textContent = '⭐ Pro unlocked! Unlimited plans active.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 4500);
+      }
+    } catch(e) {
+      console.warn('[DDA] order verify error:', e);
+    }
   }
 
   function selectBudget(el, value) {
@@ -1457,6 +1973,13 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     });
     if (!panel.children.length) {
       panel.innerHTML = `<div class="result-section"><div class="result-content">${text.replace(/\n/g,'<br>')}</div></div>`;
+    }
+
+    // PDF export button for Pro users
+    if (isPro) {
+      const pdfBtn = document.createElement('div');
+      pdfBtn.innerHTML = `<button class="pdf-export-btn" onclick="exportPDF()">📄 Export as PDF</button>`;
+      panel.appendChild(pdfBtn);
     }
 
     // Show email banner after results if not captured yet
@@ -1542,7 +2065,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     const breed = document.getElementById('breed').value.trim();
     const age   = document.getElementById('age').value;
     if (!breed || !age) { alert("Please enter your dog's breed and age."); return; }
-    if (plansUsed >= MAX_FREE_PLANS) { showUpgradePrompt(); return; }
+    if (!isPro && plansUsed >= MAX_FREE_PLANS) { showProModal(); return; }
 
     const btn     = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
@@ -1570,12 +2093,17 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
           health:      getSelectedTags(),
           currentFood: document.getElementById('currentFood').value,
           budget:      selectedBudget,
+          isPro:       isPro,   // ← tells backend to use extended prompt
         })
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || 'Failed to generate plan');
-      plansUsed++;
-      localStorage.setItem('dda_plans_used', plansUsed);
+
+      if (!isPro) {
+        plansUsed++;
+        localStorage.setItem('dda_plans_used', plansUsed);
+      }
+
       lastGeneratedPlan = data.plan;
       lastDogName = document.getElementById('dogName').value.trim();
       updateCounter();
@@ -1588,7 +2116,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
           <p>${err.message || 'Unable to generate plan. Please try again.'}</p>
         </div>`;
     } finally {
-      if (plansUsed < MAX_FREE_PLANS) btn.disabled = false;
+      if (isPro || plansUsed < MAX_FREE_PLANS) btn.disabled = false;
       spinner.style.display = 'none';
       btnText.textContent = "🐾 Generate My Dog's Plan";
     }
@@ -1596,7 +2124,46 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 
   updateCounter();
 
-  function showPage(name) {
+  checkForOrderRedirect();  // handle ?order_id= after LS redirect
+
+  // ── PDF export (Pro only) ─────────────────────────────────────────────────
+  function exportPDF() {
+    if (!lastGeneratedPlan) return;
+    const dogName = lastDogName || 'your dog';
+    const printWin = window.open('', '_blank');
+    printWin.document.write(`<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>DogDietAdvisor — ${dogName}'s Plan</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 700px; margin: 40px auto; padding: 0 24px; color: #1E3A5F; line-height: 1.75; }
+  h1 { font-size: 1.8rem; margin-bottom: 4px; }
+  .sub { font-size: 0.85rem; color: #7A8999; margin-bottom: 32px; }
+  h2 { font-size: 1.1rem; border-bottom: 2px solid #EBF5F0; padding-bottom: 6px; margin-top: 28px; }
+  ul { padding-left: 18px; }
+  li { margin-bottom: 4px; }
+  .footer { margin-top: 40px; font-size: 0.75rem; color: #B0BECA; border-top: 1px solid #EBF5F0; padding-top: 12px; }
+</style>
+</head><body>
+<h1>🐾 ${dogName}'s Personalized Nutrition Plan</h1>
+<p class="sub">Generated by DogDietAdvisor.com · Pro Plan</p>
+${lastGeneratedPlan
+  .replace(/###\s*/g, '<h2>')
+  .replace(/\n\n/g, '</h2>')
+  .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+  .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>'+m+'</ul>')
+  .replace(/\n/g, '<br>')}
+<div class="footer">DogDietAdvisor.com · For wellness guidance only — not veterinary advice.</div>
+</body></html>`);
+    printWin.document.close();
+    setTimeout(() => { printWin.print(); }, 400);
+  }
+
+  // Close Pro modal on backdrop click
+  document.getElementById('proModal').addEventListener('click', function(e) {
+    if (e.target === this) closeProModal();
+  });
     document.getElementById('page-' + name).classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -1625,6 +2192,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       closeEmailModal();
+      closeProModal();
       document.querySelectorAll('.page-overlay.active').forEach(el => {
         el.classList.remove('active');
         document.body.style.overflow = '';

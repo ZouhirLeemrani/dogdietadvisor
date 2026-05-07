@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { dogName, breed, age, sex, weight, activity, health, currentFood, budget, email, planText } = body;
+    const { dogName, breed, age, sex, weight, activity, health, currentFood, budget, email, planText, isPro } = body;
 
     // Email-only mode: plan already generated, just send it
     if (email && planText && process.env.BREVO_API_KEY) {
@@ -95,7 +95,8 @@ exports.handler = async (event) => {
 
     const budgetContext = budgetMap[budget] || "mid-range brands with good quality-to-price ratio";
 
-    const prompt = `You are an expert canine nutritionist and dog wellness advisor with 20+ years of experience.
+    // ── FREE prompt ───────────────────────────────────────────────────────────
+    const freePrompt = `You are an expert canine nutritionist and dog wellness advisor with 20+ years of experience.
 
 A dog owner needs a personalized plan for their dog. Here are the details:
 - Name: ${dogName || "the dog"}
@@ -124,13 +125,67 @@ List foods toxic or harmful for this specific breed or health condition, plus br
 
 Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
+    // ── PRO prompt ────────────────────────────────────────────────────────────
+    const proPrompt = `You are a board-certified veterinary nutritionist with 25+ years of clinical experience advising on canine diet optimization.
+
+A Pro member needs a deeply detailed, clinical-grade plan for their dog:
+- Name: ${dogName || "the dog"}
+- Breed: ${breed}
+- Age: ${age}
+- Sex: ${sex || "Unknown"}
+- Weight: ${weight || "Unknown"} kg
+- Activity level: ${activity || "Unknown"}
+- Health concerns: ${health || "None"}
+- Current food type: ${currentFood || "Unknown"}
+- Budget preference: ${budgetContext}
+
+Provide a comprehensive, clinical-quality response with EXACTLY these 4 sections:
+
+### 🍗 DIET & NUTRITION PLAN
+Include:
+- Precise daily caloric requirement (use the formula: RER = 70 × body weight(kg)^0.75, then apply activity multiplier)
+- Gram-level portion sizes per meal (e.g. "155g dry kibble per meal, twice daily")
+- Ideal macronutrient ratios (protein %, fat %, carbohydrate %) for this breed and life stage
+- Key micronutrients and any breed-specific deficiencies to address
+- Feeding schedule with specific meal timing recommendations
+- Hydration guidance (daily water intake target in ml)
+- Transition protocol if switching foods (7-day plan)
+
+### 🏷️ RECOMMENDED FOOD BRANDS
+List 5-7 specific brands matched to budget (${budgetContext}). For each:
+- Brand and product name
+- Why it suits this exact dog profile (breed, age, health concerns)
+- Key beneficial ingredients
+Include both dry and wet options where appropriate. Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Merrick, Wellness Core, Acana, etc.
+
+### 🏃 LIFESTYLE & EXERCISE GUIDE
+Include:
+- Daily exercise duration (minutes) broken down by type (aerobic, mental, social)
+- 3-5 breed-specific activities with brief instructions
+- Mental enrichment protocol (puzzle feeders, training, scent work)
+- Signs of over- or under-exercise for this breed
+- Seasonal adjustments if relevant
+
+### ⚠️ FOODS & RISKS TO AVOID
+Include:
+- Foods outright toxic for dogs (with brief explanation of why)
+- Foods specifically problematic for this breed or health condition
+- Breed-specific genetic health risks and how diet mitigates them
+- Warning signs of nutritional deficiency or food intolerance to watch for
+- Supplement recommendations with specific dosages (e.g. fish oil: 1000mg EPA+DHA per 10kg body weight daily)
+
+Be precise, clinical, and actionable. Use real measurements and specific guidance throughout.`;
+
+    const prompt   = isPro ? proPrompt   : freePrompt;
+    const maxTok   = isPro ? 2000        : 1000;
+
     const client = new Anthropic.Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
     const message = await client.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 1000,
+      max_tokens: maxTok,
       messages: [{ role: "user", content: prompt }],
     });
 
