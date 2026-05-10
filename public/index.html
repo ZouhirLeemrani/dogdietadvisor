@@ -2179,13 +2179,14 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         return m ? m.index : Infinity;
       }).filter(i => i > match.index).sort((a,b)=>a-b);
       let content = text.slice(start, nexts[0]||text.length).trim();
+      const rawContent = content; // preserve raw for brand card parsing
       content = content.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
       content = content.replace(/\*(.+?)\*/g,'<em>$1</em>');
       content = content.replace(/^[-•]\s+(.+)$/gm,'<li>$1</li>');
       content = content.replace(/(<li>.*<\/li>\n?)+/gs, m=>`<ul>${m}</ul>`);
       content = content.replace(/\n\n+/g,'</p><p>');
       content = `<p>${content}</p>`;
-      const affHtml = s.key.includes('RECOMMENDED FOOD BRANDS') ? renderBrandCards(content) : null;
+      const affHtml = s.key.includes('RECOMMENDED FOOD BRANDS') ? renderBrandCards(rawContent) : null;
       const div = document.createElement('div');
       div.className = 'result-section';
       if (affHtml !== null) {
