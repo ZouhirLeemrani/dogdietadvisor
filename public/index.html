@@ -2171,17 +2171,22 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       { key: 'FOODS & RISKS TO AVOID',    icon: '⚠️', iconClass: 'icon-red'   },
     ];
     sections.forEach((s, idx) => {
-      const pat = new RegExp(`###+[^\n]*${s.key}`, 'i');
-      const match = text.match(pat);
-      if (!match) return;
-      const start = match.index + match[0].length;
-      const nexts = sections.map((ns,ni) => {
-        if (ni <= idx) return -1;
-        const p = new RegExp(`###+[^\n]*${ns.key}`, 'i');
-        const m = text.match(p);
-        return m ? m.index : Infinity;
-      }).filter(i => i > match.index).sort((a,b)=>a-b);
-      let content = text.slice(start, nexts[0]||text.length).trim();
+      // Find section by scanning lines — avoids emoji/regex issues
+      const lines = text.split('\n');
+      let startLine = -1;
+      let endLine = lines.length;
+      for (let li = 0; li < lines.length; li++) {
+        const l = lines[li];
+        if (l.startsWith('##') && l.toUpperCase().includes(s.key.toUpperCase())) {
+          startLine = li + 1; // content starts after heading
+        } else if (startLine !== -1 && l.startsWith('##')) {
+          // check if this is another known section
+          const isOther = sections.some((ns, ni) => ni !== idx && l.toUpperCase().includes(ns.key.toUpperCase()));
+          if (isOther) { endLine = li; break; }
+        }
+      }
+      if (startLine === -1) return;
+      let content = lines.slice(startLine, endLine).join('\n').trim();
       const rawContent = content; // preserve raw for brand card parsing
       content = content.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
       content = content.replace(/\*(.+?)\*/g,'<em>$1</em>');
