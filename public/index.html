@@ -919,7 +919,107 @@
     color: white;
   }
 
-  /* ── PDF EXPORT BUTTON ── */
+  /* ── BRAND CARDS ── */
+  .brand-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
+
+  .brand-card {
+    background: var(--white);
+    border: 1.5px solid rgba(30,58,95,0.09);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.06);
+  }
+
+  .brand-num {
+    min-width: 32px;
+    height: 32px;
+    background: var(--navy);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .brand-body { flex: 1; }
+
+  .brand-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .brand-desc {
+    font-size: 0.82rem;
+    color: #4A5D70;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .brand-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .brand-tag {
+    background: var(--green-lite);
+    color: var(--green-dark);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(74,140,111,0.2);
+  }
+
+  .brand-shop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .brand-shop-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .brand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .brand-btn.chewy {
+    background: #0070C9;
+    color: white;
+  }
+
+  .brand-btn.amazon {
+    background: #E8920A;
+    color: white;
+  }
+
+  .brand-btn:hover { opacity: 0.88; transform: translateY(-1px); }
   .pdf-export-btn {
     display: inline-flex;
     align-items: center;
@@ -2006,23 +2106,75 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     return [...document.querySelectorAll('.health-tag.selected')].map(t => t.textContent).join(', ') || 'None';
   }
 
+  function renderBrandCards(rawContent) {
+    // Parse structured brand format: BRAND: / WHY: / TAGS:
+    const chewyUrl = 'https://chewy.sjv.io/4arv0n';
+    const amazonUrl = 'https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20';
+
+    // Split into brand blocks
+    const blocks = rawContent.split(/(?=BRAND:)/i).filter(b => b.trim());
+
+    if (blocks.length === 0) {
+      // Fallback: just show content with shop strip
+      return `<div class="result-content">${rawContent}</div>
+        <div class="affiliate-strip">
+          <div class="aff-label">Shop recommended brands</div>
+          <a class="affiliate-link" href="${chewyUrl}" target="_blank">🛒 Chewy</a>
+          <a class="affiliate-link" href="${amazonUrl}" target="_blank">📦 Amazon</a>
+        </div>`;
+    }
+
+    let html = '<div class="brand-cards">';
+    blocks.forEach((block, i) => {
+      const brandMatch = block.match(/BRAND:\s*(.+?)(?:\n|$)/i);
+      const whyMatch   = block.match(/WHY:\s*(.+?)(?:\n|$)/i);
+      const tagsMatch  = block.match(/TAGS:\s*(.+?)(?:\n|$)/i);
+
+      if (!brandMatch) return;
+
+      const name = brandMatch[1].trim().replace(/\*\*(.+?)\*\*/g, '$1');
+      const why  = whyMatch  ? whyMatch[1].trim()  : '';
+      const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean) : [];
+
+      const tagHtml = tags.map(t => `<span class="brand-tag">${t}</span>`).join('');
+      const searchQ = encodeURIComponent(name.split('(')[0].trim());
+
+      html += `
+        <div class="brand-card">
+          <div class="brand-num">${i + 1}</div>
+          <div class="brand-body">
+            <div class="brand-name">${name}</div>
+            ${why ? `<div class="brand-desc">${why}</div>` : ''}
+            ${tagHtml ? `<div class="brand-tags">${tagHtml}</div>` : ''}
+            <div class="brand-shop">
+              <span class="brand-shop-label">🛒 Shop this brand:</span>
+              <a class="brand-btn chewy" href="https://www.chewy.com/s?query=${searchQ}&ref=${chewyUrl}" target="_blank">Chewy</a>
+              <a class="brand-btn amazon" href="https://www.amazon.com/s?k=${searchQ}&tag=dogdietadviso-20" target="_blank">Amazon</a>
+            </div>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    return html;
+  }
+
   function renderResults(text) {
     const panel = document.getElementById('resultsPanel');
     panel.innerHTML = '';
     const sections = [
-      { key: '🍗 DIET & NUTRITION PLAN',    icon: '🍗', iconClass: 'icon-amber' },
-      { key: '🏷️ RECOMMENDED FOOD BRANDS', icon: '🏷️', iconClass: 'icon-green' },
-      { key: '🏃 LIFESTYLE & EXERCISE GUIDE',icon: '🏃', iconClass: 'icon-navy'  },
-      { key: '⚠️ FOODS & RISKS TO AVOID',   icon: '⚠️', iconClass: 'icon-red'   },
+      { key: 'DIET & NUTRITION PLAN',     icon: '🍗', iconClass: 'icon-amber' },
+      { key: 'RECOMMENDED FOOD BRANDS',   icon: '🏷️', iconClass: 'icon-green' },
+      { key: 'LIFESTYLE & EXERCISE GUIDE',icon: '🏃', iconClass: 'icon-navy'  },
+      { key: 'FOODS & RISKS TO AVOID',    icon: '⚠️', iconClass: 'icon-red'   },
     ];
     sections.forEach((s, idx) => {
-      const pat = new RegExp(`###+\s*${s.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
+      const pat = new RegExp(`###+[^\n]*${s.key}`, 'i');
       const match = text.match(pat);
       if (!match) return;
       const start = match.index + match[0].length;
       const nexts = sections.map((ns,ni) => {
         if (ni <= idx) return -1;
-        const p = new RegExp(`###+\s*${ns.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
+        const p = new RegExp(`###+[^\n]*${ns.key}`, 'i');
         const m = text.match(p);
         return m ? m.index : Infinity;
       }).filter(i => i > match.index).sort((a,b)=>a-b);
@@ -2033,17 +2185,16 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       content = content.replace(/(<li>.*<\/li>\n?)+/gs, m=>`<ul>${m}</ul>`);
       content = content.replace(/\n\n+/g,'</p><p>');
       content = `<p>${content}</p>`;
-      const affHtml = s.key.includes('BRANDS') ? `
-        <div class="affiliate-strip">
-          <div class="aff-label">Shop recommended brands</div>
-          <a class="affiliate-link" href="https://chewy.sjv.io/4arv0n" target="_blank">🛒 Chewy</a>
-          <a class="affiliate-link" href="https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20" target="_blank">📦 Amazon</a>
-        </div>` : '';
+      const affHtml = s.key.includes('RECOMMENDED FOOD BRANDS') ? renderBrandCards(content) : null;
       const div = document.createElement('div');
       div.className = 'result-section';
-      div.innerHTML = `
-        <h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>
-        <div class="result-content">${content}</div>${affHtml}`;
+      if (affHtml !== null) {
+        div.innerHTML = `<h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>${affHtml}`;
+      } else {
+        div.innerHTML = `
+          <h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>
+          <div class="result-content">${content}</div>`;
+      }
       panel.appendChild(div);
     });
     if (!panel.children.length) {
