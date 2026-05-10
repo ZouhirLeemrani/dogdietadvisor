@@ -2432,8 +2432,27 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         }
         // Empty line
         if (line.trim() === '') { i++; continue; }
-        // Paragraph
-        html += `<p>${fmt(line)}</p>`;
+        // BRAND block — render as styled card in PDF
+        if (line.match(/^BRAND:/i)) {
+          const name = fmt(line.replace(/^BRAND:\s*/i, ''));
+          let why = '', tags = '';
+          if (lines[i+1] && lines[i+1].match(/^WHY:/i)) {
+            why = fmt(lines[i+1].replace(/^WHY:\s*/i, ''));
+            i++;
+          }
+          if (lines[i+1] && lines[i+1].match(/^TAGS:/i)) {
+            tags = lines[i+1].replace(/^TAGS:\s*/i, '');
+            i++;
+          }
+          const tagPills = tags.split(',').map(t => t.trim()).filter(Boolean)
+            .map(t => `<span style="display:inline-block;background:#EBF5F0;color:#3A7A5E;font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-right:4px;margin-bottom:4px;">${t}</span>`).join('');
+          html += `<div style="border:1.5px solid #e0eaf2;border-radius:10px;padding:14px 16px;margin-bottom:12px;page-break-inside:avoid;">
+            <div style="font-weight:bold;color:#3A7A5E;font-size:0.95rem;margin-bottom:4px;">${name}</div>
+            ${why ? `<div style="font-size:0.85rem;color:#4A5D70;margin-bottom:8px;">${why}</div>` : ''}
+            ${tagPills ? `<div>${tagPills}</div>` : ''}
+          </div>`;
+          i++; continue;
+        }
         i++;
       }
       return html;
