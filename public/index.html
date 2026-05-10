@@ -2016,13 +2016,13 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       { key: '⚠️ FOODS & RISKS TO AVOID',   icon: '⚠️', iconClass: 'icon-red'   },
     ];
     sections.forEach((s, idx) => {
-      const pat = new RegExp(`###\\s*${s.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
+      const pat = new RegExp(`###+\s*${s.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
       const match = text.match(pat);
       if (!match) return;
       const start = match.index + match[0].length;
       const nexts = sections.map((ns,ni) => {
         if (ni <= idx) return -1;
-        const p = new RegExp(`###\\s*${ns.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
+        const p = new RegExp(`###+\s*${ns.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
         const m = text.match(p);
         return m ? m.index : Infinity;
       }).filter(i => i > match.index).sort((a,b)=>a-b);
