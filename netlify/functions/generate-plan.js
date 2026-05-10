@@ -149,7 +149,7 @@ Respond with EXACTLY these 4 sections:
 - 7-day food transition protocol (brief)
 
 ## 🏷️ RECOMMENDED FOOD BRANDS
-List 4-5 brands. For EACH brand use EXACTLY this format:
+List 4-5 brands. For EACH brand use EXACTLY this format (no bold, no asterisks on the labels):
 BRAND: [product name]
 WHY: [one sentence specific to this dog]
 TAGS: [2-3 tags, comma separated]
