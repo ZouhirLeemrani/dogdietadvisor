@@ -2107,17 +2107,17 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   }
 
   function renderBrandCards(rawContent) {
-    // Parse structured brand format: BRAND: / WHY: / TAGS:
     const chewyUrl = 'https://chewy.sjv.io/4arv0n';
     const amazonUrl = 'https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20';
 
-    // Split into brand blocks
-    const blocks = rawContent.split(/(?=BRAND:)/i).filter(b => b.trim());
+    // Strip bold markers from the whole content first
+    const clean = rawContent.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1');
+
+    // Split into brand blocks — handles both "BRAND:" and "**BRAND:**"
+    const blocks = clean.split(/(?=BRAND:)/i).filter(b => b.trim());
 
     if (blocks.length === 0) {
-      // Fallback: just show content with shop strip
-      return `<div class="result-content">${rawContent}</div>
-        <div class="affiliate-strip">
+      return `<div class="affiliate-strip">
           <div class="aff-label">Shop recommended brands</div>
           <a class="affiliate-link" href="${chewyUrl}" target="_blank">🛒 Chewy</a>
           <a class="affiliate-link" href="${amazonUrl}" target="_blank">📦 Amazon</a>
@@ -2125,30 +2125,33 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     }
 
     let html = '<div class="brand-cards">';
-    blocks.forEach((block, i) => {
+    let count = 0;
+    blocks.forEach((block) => {
       const brandMatch = block.match(/BRAND:\s*(.+?)(?:\n|$)/i);
       const whyMatch   = block.match(/WHY:\s*(.+?)(?:\n|$)/i);
       const tagsMatch  = block.match(/TAGS:\s*(.+?)(?:\n|$)/i);
 
       if (!brandMatch) return;
+      count++;
 
-      const name = brandMatch[1].trim().replace(/\*\*(.+?)\*\*/g, '$1');
+      const name = brandMatch[1].trim();
       const why  = whyMatch  ? whyMatch[1].trim()  : '';
-      const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean) : [];
+      const rawTags = tagsMatch ? tagsMatch[1] : '';
+      const tags = rawTags.split(/[,;]/).map(t => t.trim()).filter(Boolean);
 
       const tagHtml = tags.map(t => `<span class="brand-tag">${t}</span>`).join('');
       const searchQ = encodeURIComponent(name.split('(')[0].trim());
 
       html += `
         <div class="brand-card">
-          <div class="brand-num">${i + 1}</div>
+          <div class="brand-num">${count}</div>
           <div class="brand-body">
             <div class="brand-name">${name}</div>
             ${why ? `<div class="brand-desc">${why}</div>` : ''}
             ${tagHtml ? `<div class="brand-tags">${tagHtml}</div>` : ''}
             <div class="brand-shop">
               <span class="brand-shop-label">🛒 Shop this brand:</span>
-              <a class="brand-btn chewy" href="https://www.chewy.com/s?query=${searchQ}&ref=${chewyUrl}" target="_blank">Chewy</a>
+              <a class="brand-btn chewy" href="https://www.chewy.com/s?query=${searchQ}" target="_blank">Chewy</a>
               <a class="brand-btn amazon" href="https://www.amazon.com/s?k=${searchQ}&tag=dogdietadviso-20" target="_blank">Amazon</a>
             </div>
           </div>
