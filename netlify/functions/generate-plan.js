@@ -131,59 +131,44 @@ List foods toxic or harmful for this specific breed or health condition, plus br
 Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
     // ── PRO prompt ────────────────────────────────────────────────────────────
-    const proPrompt = `You are a board-certified veterinary nutritionist with 25+ years of clinical experience advising on canine diet optimization.
+    const proPrompt = `You are a board-certified veterinary nutritionist. Provide a clinical-grade nutrition plan. Be precise and concise — avoid lengthy explanations.
 
-A Pro member needs a deeply detailed, clinical-grade plan for their dog:
-- Name: ${dogName || "the dog"}
-- Breed: ${breed}
-- Age: ${age}
-- Sex: ${sex || "Unknown"}
-- Weight: ${weight || "Unknown"} kg
-- Activity level: ${activity || "Unknown"}
-- Health concerns: ${health || "None"}
-- Current food type: ${currentFood || "Unknown"}
-- Budget preference: ${budgetContext}
+Dog profile:
+- Name: ${dogName || "the dog"}, Breed: ${breed}, Age: ${age}, Sex: ${sex || "Unknown"}
+- Weight: ${weight || "Unknown"} kg, Activity: ${activity || "Unknown"}
+- Health concerns: ${health || "None"}, Current food: ${currentFood || "Unknown"}
+- Budget: ${budgetContext}
 
-Provide a comprehensive, clinical-quality response with EXACTLY these 4 sections:
+Respond with EXACTLY these 4 sections:
 
-### 🍗 DIET & NUTRITION PLAN
-Include:
-- Precise daily caloric requirement (use the formula: RER = 70 × body weight(kg)^0.75, then apply activity multiplier)
-- Gram-level portion sizes per meal (e.g. "155g dry kibble per meal, twice daily")
-- Ideal macronutrient ratios (protein %, fat %, carbohydrate %) for this breed and life stage
-- Key micronutrients and any breed-specific deficiencies to address
-- Feeding schedule with specific meal timing recommendations
-- Hydration guidance (daily water intake target in ml)
-- Transition protocol if switching foods (7-day plan)
+## 🍗 DIET & NUTRITION PLAN
+- RER = 70 × (weight)^0.75, apply activity multiplier, state daily kcal target
+- Gram-level portions per meal (e.g. "190g dry kibble, twice daily")
+- Macronutrient targets: protein %, fat %, fiber % with brief rationale
+- Top 3 key micronutrients for this breed with daily targets
+- 7-day food transition protocol (brief)
 
-### 🏷️ RECOMMENDED FOOD BRANDS
-List 5-6 specific brands matched to budget (${budgetContext}). For each brand output EXACTLY this format on separate lines:
-BRAND: [Brand and product name]
-WHY: [Why it suits this exact dog profile — breed, age, health concerns]
-TAGS: [2-3 short tags like "High protein", "Joint support", "Breed-specific", "Fresh ingredients", "Vet recommended"]
+## 🏷️ RECOMMENDED FOOD BRANDS
+List 4-5 brands. For EACH brand use EXACTLY this format:
+BRAND: [product name]
+WHY: [one sentence specific to this dog]
+TAGS: [2-3 tags, comma separated]
 
-Include both dry and wet options where appropriate. Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Merrick, Wellness Core, Acana, etc.
+## 🏃 LIFESTYLE & EXERCISE GUIDE
+- Daily exercise in minutes by type (aerobic/mental/social)
+- 3 breed-specific activities
+- Over/under-exercise warning signs
 
-### 🏃 LIFESTYLE & EXERCISE GUIDE
-Include:
-- Daily exercise duration (minutes) broken down by type (aerobic, mental, social)
-- 3-5 breed-specific activities with brief instructions
-- Mental enrichment protocol (puzzle feeders, training, scent work)
-- Signs of over- or under-exercise for this breed
-- Seasonal adjustments if relevant
+## ⚠️ FOODS & RISKS TO AVOID
+- Top toxic foods with brief reason
+- Breed-specific risks and dietary mitigations
+- Key supplement with dosage (e.g. fish oil: Xmg/day)
 
-### ⚠️ FOODS & RISKS TO AVOID
-Include:
-- Foods outright toxic for dogs (with brief explanation of why)
-- Foods specifically problematic for this breed or health condition
-- Breed-specific genetic health risks and how diet mitigates them
-- Warning signs of nutritional deficiency or food intolerance to watch for
-- Supplement recommendations with specific dosages (e.g. fish oil: 1000mg EPA+DHA per 10kg body weight daily)
+Be specific and use real measurements throughout.`;
 
-Be precise, clinical, and actionable. Use real measurements and specific guidance throughout.`;
 
     const prompt   = isPro ? proPrompt   : freePrompt;
-    const maxTok   = isPro ? 1500        : 1000;
+    const maxTok   = isPro ? 2500        : 1200;
 
     const client = new Anthropic.Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
