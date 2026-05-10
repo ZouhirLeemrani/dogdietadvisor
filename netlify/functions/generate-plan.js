@@ -115,7 +115,12 @@ Please provide a detailed, practical, and friendly response with EXACTLY these 4
 Give daily calorie estimate, ideal macronutrient balance, feeding frequency, portion guidance, and key nutrients this specific breed needs. Be specific and practical.
 
 ### 🏷️ RECOMMENDED FOOD BRANDS
-List 4-6 specific commercially available food brands that match the owner's budget preference (${budgetContext}). For each brand briefly explain WHY it fits this dog's profile (1 sentence). Do NOT mention prices. Focus on real brands like Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, etc.
+List 4-5 specific brands. For each brand output EXACTLY this format on separate lines:
+BRAND: [Brand and product name]
+WHY: [One sentence why it fits this dog]
+TAGS: [2-3 short tags like "High protein", "Vet recommended", "Large breed", "Budget-friendly", "Grain-free"]
+
+Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, Merrick, Wellness, Acana.
 
 ### 🏃 LIFESTYLE & EXERCISE GUIDE
 Recommend daily exercise duration, types of activities ideal for this breed and age, mental stimulation ideas, and breed-specific lifestyle tips.
@@ -126,65 +131,53 @@ List foods toxic or harmful for this specific breed or health condition, plus br
 Be warm, direct, and specific. Tailor everything to this exact dog profile.`;
 
     // ── PRO prompt ────────────────────────────────────────────────────────────
-    const proPrompt = `You are a board-certified veterinary nutritionist with 25+ years of clinical experience advising on canine diet optimization.
+    const proPrompt = `You are a board-certified veterinary nutritionist. Provide a clinical-grade nutrition plan. Be precise and concise — avoid lengthy explanations.
 
-A Pro member needs a deeply detailed, clinical-grade plan for their dog:
-- Name: ${dogName || "the dog"}
-- Breed: ${breed}
-- Age: ${age}
-- Sex: ${sex || "Unknown"}
-- Weight: ${weight || "Unknown"} kg
-- Activity level: ${activity || "Unknown"}
-- Health concerns: ${health || "None"}
-- Current food type: ${currentFood || "Unknown"}
-- Budget preference: ${budgetContext}
+Dog profile:
+- Name: ${dogName || "the dog"}, Breed: ${breed}, Age: ${age}, Sex: ${sex || "Unknown"}
+- Weight: ${weight || "Unknown"} kg, Activity: ${activity || "Unknown"}
+- Health concerns: ${health || "None"}, Current food: ${currentFood || "Unknown"}
+- Budget: ${budgetContext}
 
-Provide a comprehensive, clinical-quality response with EXACTLY these 4 sections:
+Respond with EXACTLY these 4 sections:
 
-### 🍗 DIET & NUTRITION PLAN
-Include:
-- Precise daily caloric requirement (use the formula: RER = 70 × body weight(kg)^0.75, then apply activity multiplier)
-- Gram-level portion sizes per meal (e.g. "155g dry kibble per meal, twice daily")
-- Ideal macronutrient ratios (protein %, fat %, carbohydrate %) for this breed and life stage
-- Key micronutrients and any breed-specific deficiencies to address
-- Feeding schedule with specific meal timing recommendations
-- Hydration guidance (daily water intake target in ml)
-- Transition protocol if switching foods (7-day plan)
+## 🍗 DIET & NUTRITION PLAN
+- RER = 70 × (weight)^0.75, apply activity multiplier, state daily kcal target
+- Gram-level portions per meal (e.g. "190g dry kibble, twice daily")
+- Macronutrient targets: protein %, fat %, fiber % with brief rationale
+- Top 3 key micronutrients for this breed with daily targets
+- 7-day food transition protocol (brief)
 
-### 🏷️ RECOMMENDED FOOD BRANDS
-List 5-7 specific brands matched to budget (${budgetContext}). For each:
-- Brand and product name
-- Why it suits this exact dog profile (breed, age, health concerns)
-- Key beneficial ingredients
-Include both dry and wet options where appropriate. Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Merrick, Wellness Core, Acana, etc.
+## 🏷️ RECOMMENDED FOOD BRANDS
+List 4-5 brands. For EACH brand use EXACTLY this format (no bold, no asterisks on the labels):
+BRAND: [product name]
+WHY: [one sentence specific to this dog]
+TAGS: [2-3 tags, comma separated]
 
-### 🏃 LIFESTYLE & EXERCISE GUIDE
-Include:
-- Daily exercise duration (minutes) broken down by type (aerobic, mental, social)
-- 3-5 breed-specific activities with brief instructions
-- Mental enrichment protocol (puzzle feeders, training, scent work)
-- Signs of over- or under-exercise for this breed
-- Seasonal adjustments if relevant
+## 🏃 LIFESTYLE & EXERCISE GUIDE
+- Daily exercise in minutes by type (aerobic/mental/social)
+- 3 breed-specific activities
+- Over/under-exercise warning signs
 
-### ⚠️ FOODS & RISKS TO AVOID
-Include:
-- Foods outright toxic for dogs (with brief explanation of why)
-- Foods specifically problematic for this breed or health condition
-- Breed-specific genetic health risks and how diet mitigates them
-- Warning signs of nutritional deficiency or food intolerance to watch for
-- Supplement recommendations with specific dosages (e.g. fish oil: 1000mg EPA+DHA per 10kg body weight daily)
+## ⚠️ FOODS & RISKS TO AVOID
+- Top toxic foods with brief reason
+- Breed-specific risks and dietary mitigations
+- Key supplement with dosage (e.g. fish oil: Xmg/day)
 
-Be precise, clinical, and actionable. Use real measurements and specific guidance throughout.`;
+Be specific and use real measurements throughout.`;
+
 
     const prompt   = isPro ? proPrompt   : freePrompt;
-    const maxTok   = isPro ? 2000        : 1000;
+    const maxTok   = isPro ? 2500        : 1200;
 
     const client = new Anthropic.Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
+    const model = isPro ? "claude-haiku-4-5-20251001" : "claude-haiku-4-5-20251001";
+
     const message = await client.messages.create({
-      model: "claude-sonnet-4-5",
+      model: model,
       max_tokens: maxTok,
       messages: [{ role: "user", content: prompt }],
     });

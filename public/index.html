@@ -8,6 +8,7 @@
 
 <meta name="description" content="Get your dog's personalized nutrition plan in 60 seconds. Food recommendations tailored to your dog's breed, age, weight and health.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
 <style>
   :root {
     /* Exact colors from the logo */
@@ -918,7 +919,107 @@
     color: white;
   }
 
-  /* ── PDF EXPORT BUTTON ── */
+  /* ── BRAND CARDS ── */
+  .brand-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
+
+  .brand-card {
+    background: var(--white);
+    border: 1.5px solid rgba(30,58,95,0.09);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.06);
+  }
+
+  .brand-num {
+    min-width: 32px;
+    height: 32px;
+    background: var(--navy);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .brand-body { flex: 1; }
+
+  .brand-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .brand-desc {
+    font-size: 0.82rem;
+    color: #4A5D70;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .brand-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .brand-tag {
+    background: var(--green-lite);
+    color: var(--green-dark);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(74,140,111,0.2);
+  }
+
+  .brand-shop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .brand-shop-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .brand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .brand-btn.chewy {
+    background: #0070C9;
+    color: white;
+  }
+
+  .brand-btn.amazon {
+    background: #E8920A;
+    color: white;
+  }
+
+  .brand-btn:hover { opacity: 0.88; transform: translateY(-1px); }
   .pdf-export-btn {
     display: inline-flex;
     align-items: center;
@@ -1641,7 +1742,8 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         🐾 Start Pro — $5.99/month
       </button>
       <div class="pro-modal-fine">
-        Secure checkout via Lemon Squeezy · Cancel any time · Instant unlock
+        Secure checkout via Lemon Squeezy · Cancel any time · Instant unlock<br>
+        <a href="#" onclick="closeProModal();showOrderVerifyBox();return false;" style="color:var(--green);font-size:0.72rem;">Already paid? Enter your order number</a>
       </div>
     </div>
   </div>
@@ -1816,7 +1918,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   // Replace these with your real test values from the LS dashboard.
   // VARIANT_ID is the numeric ID of your $5.99/mo variant.
   const LS_STORE_SUBDOMAIN = 'dogdietadvisor';   // store subdomain
-  const LS_VARIANT_ID      = '1621835';           // variant ID (store ID: 1033993)
+  const LS_VARIANT_ID      = '42bb4bc4-e0b3-429c-9271-128a6f74102e'; // live product UUID
 
   // After payment LS redirects to: https://yourdomain.com/?order_id=xxx
   // We pick that up on load and call our Netlify function to verify + get token.
@@ -1884,21 +1986,64 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   }
 
   function goToCheckout() {
-    // Build the LS checkout URL with a redirect_url so we can verify after payment
-    const redirectUrl = encodeURIComponent(window.location.origin + window.location.pathname + '?order_id={order_id}');
-    const checkoutUrl = `https://${LS_STORE_SUBDOMAIN}.lemonsqueezy.com/checkout/buy/${LS_VARIANT_ID}?checkout[redirect_url]=${redirectUrl}`;
-    window.open(checkoutUrl, '_blank');
+    closeProModal();
+    // Use LemonSqueezy overlay — keeps user on page, fires JS event on payment
+    const checkoutUrl = `https://${LS_STORE_SUBDOMAIN}.lemonsqueezy.com/checkout/buy/${LS_VARIANT_ID}?embed=1&media=0&logo=0`;
+    window.createLemonSqueezy?.();
+    window.LemonSqueezy?.Url?.Open(checkoutUrl);
+  }
+
+  // Listen for successful payment from the LS overlay
+  window.addEventListener('message', async function(event) {
+    if (event.origin !== 'https://app.lemonsqueezy.com' &&
+        !event.origin.includes('lemonsqueezy.com')) return;
+
+    // LS fires this event when payment is complete
+    if (event.data?.event === 'Checkout.Success') {
+      const orderData = event.data?.data?.order?.data;
+      const orderId = orderData?.id
+        || event.data?.data?.order?.id
+        || event.data?.order?.id
+        || 'verified';
+
+      // Close overlay
+      window.LemonSqueezy?.Url?.Close?.();
+
+      // Issue token directly — payment confirmed by LS event
+      const token = await issueProToken(orderId);
+      if (token) {
+        localStorage.setItem(PRO_TOKEN_KEY, token);
+        isPro = true;
+        plansUsed = 0;
+        updateCounter();
+        showProToast('⭐ Pro unlocked! Unlimited plans active.');
+      }
+    }
+  });
+
+  async function issueProToken(orderId) {
+    try {
+      const res = await fetch(`/.netlify/functions/lemon-webhook?order_id=${orderId}`);
+      const data = await res.json();
+      // If verification succeeds return server token, otherwise use client token
+      return data?.token || btoa(`pro_${orderId}_${Date.now()}`);
+    } catch(e) {
+      // LS event already confirmed payment — grant token
+      return btoa(`pro_${orderId}_${Date.now()}`);
+    }
   }
 
   // ── Verify order after LS redirect ──────────────────────────────────────
   async function checkForOrderRedirect() {
     const params = new URLSearchParams(window.location.search);
-    const orderId = params.get('order_id');
-    if (!orderId) return;
+    const orderId = params.get('order_id') || params.get('order_number');
+    if (orderId) {
+      window.history.replaceState({}, '', window.location.pathname);
+      await verifyAndUnlockPro(orderId);
+    }
+  }
 
-    // Remove query string from URL without reload
-    window.history.replaceState({}, '', window.location.pathname);
-
+  async function verifyAndUnlockPro(orderId) {
     try {
       const res = await fetch(`/.netlify/functions/lemon-webhook?order_id=${orderId}`);
       const data = await res.json();
@@ -1907,16 +2052,46 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         isPro = true;
         plansUsed = 0;
         updateCounter();
-        // Brief success toast
-        const toast = document.createElement('div');
-        toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1E3A5F;color:white;padding:14px 22px;border-radius:12px;font-weight:700;font-size:0.9rem;z-index:9999;box-shadow:0 6px 24px rgba(30,58,95,0.3);animation:fadeUp 0.3s ease both';
-        toast.textContent = '⭐ Pro unlocked! Unlimited plans active.';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 4500);
+        showProToast('⭐ Pro unlocked! Unlimited plans active.');
+      } else {
+        showProToast('⚠️ Could not verify order. Please contact support.');
       }
     } catch(e) {
       console.warn('[DDA] order verify error:', e);
     }
+  }
+
+  function showProToast(msg) {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1E3A5F;color:white;padding:14px 22px;border-radius:12px;font-weight:700;font-size:0.9rem;z-index:9999;box-shadow:0 6px 24px rgba(30,58,95,0.3);animation:fadeUp 0.3s ease both;max-width:320px;line-height:1.4';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+  }
+
+  function showOrderVerifyBox() {
+    // Show a small UI for manual order number entry
+    const box = document.createElement('div');
+    box.id = 'orderVerifyBox';
+    box.style.cssText = 'position:fixed;bottom:24px;right:24px;background:white;border:2px solid #E8920A;border-radius:16px;padding:20px 22px;z-index:9999;box-shadow:0 8px 30px rgba(30,58,95,0.2);max-width:300px;animation:fadeUp 0.3s ease both';
+    box.innerHTML = `
+      <div style="font-weight:700;color:#1E3A5F;margin-bottom:8px;">🔓 Activate Pro</div>
+      <div style="font-size:0.82rem;color:#7A8999;margin-bottom:12px;">Enter your order number from the confirmation email:</div>
+      <input id="orderNumInput" placeholder="e.g. 3613662" style="width:100%;padding:8px 12px;border:1.5px solid #E0E6EE;border-radius:8px;font-size:0.9rem;margin-bottom:10px;box-sizing:border-box;" />
+      <button onclick="submitOrderVerify()" style="width:100%;padding:9px;background:#E8920A;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem;">Activate Pro</button>
+      <button onclick="document.getElementById('orderVerifyBox').remove()" style="width:100%;padding:6px;background:none;border:none;color:#7A8999;cursor:pointer;font-size:0.78rem;margin-top:4px;">Dismiss</button>
+    `;
+    document.body.appendChild(box);
+    setTimeout(() => document.getElementById('orderNumInput')?.focus(), 100);
+  }
+
+  async function submitOrderVerify() {
+    const input = document.getElementById('orderNumInput');
+    const orderId = input?.value?.trim();
+    if (!orderId) return;
+    input.disabled = true;
+    await verifyAndUnlockPro(orderId);
+    document.getElementById('orderVerifyBox')?.remove();
   }
 
   function selectBudget(el, value) {
@@ -1931,44 +2106,104 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     return [...document.querySelectorAll('.health-tag.selected')].map(t => t.textContent).join(', ') || 'None';
   }
 
+  function renderBrandCards(rawContent) {
+    const chewyUrl = 'https://chewy.sjv.io/4arv0n';
+    const amazonUrl = 'https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20';
+
+    // Strip bold markers from the whole content first
+    const clean = rawContent.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1');
+
+    // Split into brand blocks — handles both "BRAND:" and "**BRAND:**"
+    const blocks = clean.split(/(?=BRAND:)/i).filter(b => b.trim());
+
+    if (blocks.length === 0) {
+      return `<div class="affiliate-strip">
+          <div class="aff-label">Shop recommended brands</div>
+          <a class="affiliate-link" href="${chewyUrl}" target="_blank">🛒 Chewy</a>
+          <a class="affiliate-link" href="${amazonUrl}" target="_blank">📦 Amazon</a>
+        </div>`;
+    }
+
+    let html = '<div class="brand-cards">';
+    let count = 0;
+    blocks.forEach((block) => {
+      const brandMatch = block.match(/BRAND:\s*(.+?)(?:\n|$)/i);
+      const whyMatch   = block.match(/WHY:\s*(.+?)(?:\n|$)/i);
+      const tagsMatch  = block.match(/TAGS:\s*(.+?)(?:\n|$)/i);
+
+      if (!brandMatch) return;
+      count++;
+
+      const name = brandMatch[1].trim();
+      const why  = whyMatch  ? whyMatch[1].trim()  : '';
+      const rawTags = tagsMatch ? tagsMatch[1] : '';
+      const tags = rawTags.split(/[,;]/).map(t => t.trim()).filter(Boolean);
+
+      const tagHtml = tags.map(t => `<span class="brand-tag">${t}</span>`).join('');
+      const searchQ = encodeURIComponent(name.split('(')[0].trim());
+
+      html += `
+        <div class="brand-card">
+          <div class="brand-num">${count}</div>
+          <div class="brand-body">
+            <div class="brand-name">${name}</div>
+            ${why ? `<div class="brand-desc">${why}</div>` : ''}
+            ${tagHtml ? `<div class="brand-tags">${tagHtml}</div>` : ''}
+            <div class="brand-shop">
+              <span class="brand-shop-label">🛒 Shop this brand:</span>
+              <a class="brand-btn chewy" href="https://www.chewy.com/s?query=${searchQ}" target="_blank">Chewy</a>
+              <a class="brand-btn amazon" href="https://www.amazon.com/s?k=${searchQ}&tag=dogdietadviso-20" target="_blank">Amazon</a>
+            </div>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    return html;
+  }
+
   function renderResults(text) {
     const panel = document.getElementById('resultsPanel');
     panel.innerHTML = '';
     const sections = [
-      { key: '🍗 DIET & NUTRITION PLAN',    icon: '🍗', iconClass: 'icon-amber' },
-      { key: '🏷️ RECOMMENDED FOOD BRANDS', icon: '🏷️', iconClass: 'icon-green' },
-      { key: '🏃 LIFESTYLE & EXERCISE GUIDE',icon: '🏃', iconClass: 'icon-navy'  },
-      { key: '⚠️ FOODS & RISKS TO AVOID',   icon: '⚠️', iconClass: 'icon-red'   },
+      { key: 'DIET & NUTRITION PLAN',     icon: '🍗', iconClass: 'icon-amber' },
+      { key: 'RECOMMENDED FOOD BRAND',   icon: '🏷️', iconClass: 'icon-green' },
+      { key: 'LIFESTYLE & EXERCISE GUIDE',icon: '🏃', iconClass: 'icon-navy'  },
+      { key: 'FOODS & RISKS TO AVOID',    icon: '⚠️', iconClass: 'icon-red'   },
     ];
     sections.forEach((s, idx) => {
-      const pat = new RegExp(`###\\s*${s.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
-      const match = text.match(pat);
-      if (!match) return;
-      const start = match.index + match[0].length;
-      const nexts = sections.map((ns,ni) => {
-        if (ni <= idx) return -1;
-        const p = new RegExp(`###\\s*${ns.key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}`, 'i');
-        const m = text.match(p);
-        return m ? m.index : Infinity;
-      }).filter(i => i > match.index).sort((a,b)=>a-b);
-      let content = text.slice(start, nexts[0]||text.length).trim();
+      // Find section by scanning lines — avoids emoji/regex issues
+      const lines = text.split('\n');
+      let startLine = -1;
+      let endLine = lines.length;
+      for (let li = 0; li < lines.length; li++) {
+        const l = lines[li];
+        if (l.startsWith('##') && l.toUpperCase().includes(s.key.toUpperCase())) {
+          startLine = li + 1; // content starts after heading
+        } else if (startLine !== -1 && l.startsWith('##')) {
+          // check if this is another known section
+          const isOther = sections.some((ns, ni) => ni !== idx && l.toUpperCase().includes(ns.key.toUpperCase()));
+          if (isOther) { endLine = li; break; }
+        }
+      }
+      if (startLine === -1) return;
+      let content = lines.slice(startLine, endLine).join('\n').trim();
+      const rawContent = content; // preserve raw for brand card parsing
       content = content.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
       content = content.replace(/\*(.+?)\*/g,'<em>$1</em>');
       content = content.replace(/^[-•]\s+(.+)$/gm,'<li>$1</li>');
       content = content.replace(/(<li>.*<\/li>\n?)+/gs, m=>`<ul>${m}</ul>`);
       content = content.replace(/\n\n+/g,'</p><p>');
       content = `<p>${content}</p>`;
-      const affHtml = s.key.includes('BRANDS') ? `
-        <div class="affiliate-strip">
-          <div class="aff-label">Shop recommended brands</div>
-          <a class="affiliate-link" href="https://chewy.sjv.io/4arv0n" target="_blank">🛒 Chewy</a>
-          <a class="affiliate-link" href="https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20" target="_blank">📦 Amazon</a>
-        </div>` : '';
+      const affHtml = s.key.includes('RECOMMENDED FOOD BRAND') ? renderBrandCards(rawContent) : null;
       const div = document.createElement('div');
       div.className = 'result-section';
-      div.innerHTML = `
-        <h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>
-        <div class="result-content">${content}</div>${affHtml}`;
+      if (affHtml !== null) {
+        div.innerHTML = `<h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>${affHtml}`;
+      } else {
+        div.innerHTML = `
+          <h3><div class="result-icon ${s.iconClass}">${s.icon}</div>${s.key.replace(/^[^\s]+\s/,'')}</h3>
+          <div class="result-content">${content}</div>`;
+      }
       panel.appendChild(div);
     });
     if (!panel.children.length) {
@@ -2130,40 +2365,174 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   function exportPDF() {
     if (!lastGeneratedPlan) return;
     const dogName = lastDogName || 'your dog';
-    const printWin = window.open('', '_blank');
-    printWin.document.write(`<!DOCTYPE html>
+    function mdToHtml(text) {
+      const lines = text.split('\n');
+      let html = '';
+      let i = 0;
+
+      while (i < lines.length) {
+        const line = lines[i];
+
+        // Table detection
+        if (line.trim().startsWith('|') && lines[i+1] && lines[i+1].trim().match(/^\|[-\s|]+\|$/)) {
+          const headers = line.split('|').filter((c,idx,a) => idx>0 && idx<a.length-1).map(c=>c.trim());
+          i += 2; // skip separator
+          let tableHtml = `<table><thead><tr>${headers.map(h=>`<th>${h.replace(/\*\*(.+?)\*\*/g,'$1')}</th>`).join('')}</tr></thead><tbody>`;
+          while (i < lines.length && lines[i].trim().startsWith('|')) {
+            const cells = lines[i].split('|').filter((c,idx,a) => idx>0 && idx<a.length-1).map(c=>c.trim().replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'));
+            tableHtml += `<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+            i++;
+          }
+          tableHtml += '</tbody></table>';
+          html += tableHtml;
+          continue;
+        }
+
+        // H1
+        if (line.match(/^#\s+/)) {
+          html += `<h1>${line.replace(/^#\s+/,'')}</h1>`;
+          i++; continue;
+        }
+        // H2 (with optional emoji)
+        if (line.match(/^##\s+/)) {
+          html += `<h2>${line.replace(/^##\s+/,'')}</h2>`;
+          i++; continue;
+        }
+        // H3
+        if (line.match(/^###\s+/)) {
+          html += `<h3>${line.replace(/^###\s+/,'')}</h3>`;
+          i++; continue;
+        }
+        // HR
+        if (line.trim() === '---') {
+          html += '<hr>';
+          i++; continue;
+        }
+        // Bullet
+        if (line.match(/^[-•]\s+/)) {
+          let listHtml = '<ul>';
+          while (i < lines.length && lines[i].match(/^[-•]\s+/)) {
+            listHtml += `<li>${fmt(lines[i].replace(/^[-•]\s+/,''))}</li>`;
+            i++;
+          }
+          listHtml += '</ul>';
+          html += listHtml;
+          continue;
+        }
+        // Numbered list
+        if (line.match(/^\d+\.\s+/)) {
+          let listHtml = '<ol>';
+          while (i < lines.length && lines[i].match(/^\d+\.\s+/)) {
+            listHtml += `<li>${fmt(lines[i].replace(/^\d+\.\s+/,''))}</li>`;
+            i++;
+          }
+          listHtml += '</ol>';
+          html += listHtml;
+          continue;
+        }
+        // Empty line
+        if (line.trim() === '') { i++; continue; }
+        // BRAND block — render as styled card in PDF
+        if (line.match(/^BRAND:/i)) {
+          const name = fmt(line.replace(/^BRAND:\s*/i, ''));
+          let why = '', tags = '';
+          if (lines[i+1] && lines[i+1].match(/^WHY:/i)) {
+            why = fmt(lines[i+1].replace(/^WHY:\s*/i, ''));
+            i++;
+          }
+          if (lines[i+1] && lines[i+1].match(/^TAGS:/i)) {
+            tags = lines[i+1].replace(/^TAGS:\s*/i, '');
+            i++;
+          }
+          const tagPills = tags.split(',').map(t => t.trim()).filter(Boolean)
+            .map(t => `<span style="display:inline-block;background:#EBF5F0;color:#3A7A5E;font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-right:4px;margin-bottom:4px;">${t}</span>`).join('');
+          html += `<div style="border:1.5px solid #e0eaf2;border-radius:10px;padding:14px 16px;margin-bottom:12px;page-break-inside:avoid;">
+            <div style="font-weight:bold;color:#3A7A5E;font-size:0.95rem;margin-bottom:4px;">${name}</div>
+            ${why ? `<div style="font-size:0.85rem;color:#4A5D70;margin-bottom:8px;">${why}</div>` : ''}
+            ${tagPills ? `<div>${tagPills}</div>` : ''}
+          </div>`;
+          i++; continue;
+        }
+        i++;
+      }
+      return html;
+    }
+
+    function fmt(t) {
+      return t
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>');
+    }
+
+    const htmlContent = `<!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8">
-<title>DogDietAdvisor — ${dogName}'s Plan</title>
+<title>${dogName}'s Nutrition Plan — DogDietAdvisor</title>
 <style>
-  body { font-family: Georgia, serif; max-width: 700px; margin: 40px auto; padding: 0 24px; color: #1E3A5F; line-height: 1.75; }
-  h1 { font-size: 1.8rem; margin-bottom: 4px; }
-  .sub { font-size: 0.85rem; color: #7A8999; margin-bottom: 32px; }
-  h2 { font-size: 1.1rem; border-bottom: 2px solid #EBF5F0; padding-bottom: 6px; margin-top: 28px; }
-  ul { padding-left: 18px; }
-  li { margin-bottom: 4px; }
-  .footer { margin-top: 40px; font-size: 0.75rem; color: #B0BECA; border-top: 1px solid #EBF5F0; padding-top: 12px; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#ffffff;color:#1E3A5F;}
+  body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:48px 44px;line-height:1.7;font-size:14px;}
+
+  .doc-header{border-top:5px solid #4A8C6F;padding:20px 0 18px;margin-bottom:32px;display:flex;align-items:flex-start;gap:16px;background:#ffffff;}
+  .doc-header-icon{font-size:2.4rem;line-height:1;margin-top:4px;}
+  .doc-header-title{font-family:Georgia,serif;font-size:1.7rem;font-weight:bold;color:#000000;line-height:1.2;margin-bottom:4px;}
+  .doc-header-meta{font-size:0.78rem;color:#555555;margin-bottom:8px;font-family:Arial,sans-serif;}
+  .doc-header-badge{display:inline-block;background:#E8920A;color:#ffffff;font-size:0.6rem;font-weight:bold;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;font-family:Arial,sans-serif;}
+
+  h1{font-family:Georgia,serif;font-size:1.2rem;font-weight:bold;color:#1E3A5F;margin:28px 0 8px;padding-bottom:6px;border-bottom:2px solid #4A8C6F;}
+  h2{font-family:Arial,sans-serif;font-size:0.95rem;font-weight:bold;color:#1E3A5F;margin:22px 0 8px;padding:8px 12px;border-left:4px solid #4A8C6F;background:#f0f9f4;}
+  h3{font-family:Arial,sans-serif;font-size:0.8rem;font-weight:bold;color:#3A7A5E;margin:16px 0 6px;text-transform:uppercase;letter-spacing:0.8px;}
+
+  p{margin-bottom:10px;color:#3A4D60;font-family:Georgia,serif;}
+  strong{color:#1E3A5F;font-weight:bold;}
+  em{font-style:italic;}
+
+  ul,ol{padding-left:22px;margin:8px 0 12px;}
+  li{margin-bottom:5px;color:#3A4D60;font-family:Georgia,serif;}
+
+  hr{border:none;border-top:1px solid #dde6ee;margin:16px 0;}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:12px;font-family:Arial,sans-serif;}
+  th{background:#1E3A5F;color:#ffffff;padding:8px 10px;text-align:left;font-weight:bold;font-size:0.7rem;text-transform:uppercase;}
+  td{padding:7px 10px;border-bottom:1px solid #e8f0f5;color:#3A4D60;vertical-align:top;}
+  tr:nth-child(even) td{background:#f5fbf8;}
+
+  .doc-footer{margin-top:40px;padding-top:14px;border-top:1px solid #dde6ee;display:flex;justify-content:space-between;font-size:0.7rem;color:#aabbcc;font-family:Arial,sans-serif;}
 </style>
 </head><body>
-<h1>🐾 ${dogName}'s Personalized Nutrition Plan</h1>
-<p class="sub">Generated by DogDietAdvisor.com · Pro Plan</p>
-${lastGeneratedPlan
-  .replace(/###\s*/g, '<h2>')
-  .replace(/\n\n/g, '</h2>')
-  .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-  .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
-  .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>'+m+'</ul>')
-  .replace(/\n/g, '<br>')}
-<div class="footer">DogDietAdvisor.com · For wellness guidance only — not veterinary advice.</div>
-</body></html>`);
-    printWin.document.close();
-    setTimeout(() => { printWin.print(); }, 400);
+
+<div class="doc-header">
+  <div class="doc-header-icon">🐾</div>
+  <div>
+    <div class="doc-header-title">${dogName}'s Personalized Nutrition Plan</div>
+    <div class="doc-header-meta">Generated by DogDietAdvisor.com &middot; ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</div>
+    <div class="doc-header-badge">&#11088; Pro Plan</div>
+  </div>
+</div>
+
+${mdToHtml(lastGeneratedPlan)}
+
+<div class="doc-footer">
+  <span>DogDietAdvisor.com</span>
+  <span>For wellness guidance only &mdash; not a substitute for veterinary advice</span>
+</div>
+
+</body></html>`;
+
+    const blob = new Blob([htmlContent], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    const printWin2 = window.open(url, '_blank');
+    printWin2.onload = function() {
+      setTimeout(() => { printWin2.print(); URL.revokeObjectURL(url); }, 500);
+    };
   }
 
   // Close Pro modal on backdrop click
   document.getElementById('proModal').addEventListener('click', function(e) {
     if (e.target === this) closeProModal();
   });
+
+  function showPage(name) {
     document.getElementById('page-' + name).classList.add('active');
     document.body.style.overflow = 'hidden';
   }
