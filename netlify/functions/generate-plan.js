@@ -115,7 +115,12 @@ Please provide a detailed, practical, and friendly response with EXACTLY these 4
 Give daily calorie estimate, ideal macronutrient balance, feeding frequency, portion guidance, and key nutrients this specific breed needs. Be specific and practical.
 
 ### 🏷️ RECOMMENDED FOOD BRANDS
-List 4-6 specific commercially available food brands that match the owner's budget preference (${budgetContext}). For each brand briefly explain WHY it fits this dog's profile (1 sentence). Do NOT mention prices. Focus on real brands like Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, etc.
+List 4-5 specific brands. For each brand output EXACTLY this format on separate lines:
+BRAND: [Brand and product name]
+WHY: [One sentence why it fits this dog]
+TAGS: [2-3 short tags like "High protein", "Vet recommended", "Large breed", "Budget-friendly", "Grain-free"]
+
+Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Iams, Eukanuba, Merrick, Wellness, Acana.
 
 ### 🏃 LIFESTYLE & EXERCISE GUIDE
 Recommend daily exercise duration, types of activities ideal for this breed and age, mental stimulation ideas, and breed-specific lifestyle tips.
@@ -152,10 +157,11 @@ Include:
 - Transition protocol if switching foods (7-day plan)
 
 ### 🏷️ RECOMMENDED FOOD BRANDS
-List 5-7 specific brands matched to budget (${budgetContext}). For each:
-- Brand and product name
-- Why it suits this exact dog profile (breed, age, health concerns)
-- Key beneficial ingredients
+List 5-6 specific brands matched to budget (${budgetContext}). For each brand output EXACTLY this format on separate lines:
+BRAND: [Brand and product name]
+WHY: [Why it suits this exact dog profile — breed, age, health concerns]
+TAGS: [2-3 short tags like "High protein", "Joint support", "Breed-specific", "Fresh ingredients", "Vet recommended"]
+
 Include both dry and wet options where appropriate. Real brands only: Royal Canin, Hill's Science Diet, Orijen, Purina Pro Plan, Blue Buffalo, Taste of the Wild, Merrick, Wellness Core, Acana, etc.
 
 ### 🏃 LIFESTYLE & EXERCISE GUIDE
