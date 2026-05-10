@@ -2166,7 +2166,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     panel.innerHTML = '';
     const sections = [
       { key: 'DIET & NUTRITION PLAN',     icon: '🍗', iconClass: 'icon-amber' },
-      { key: 'RECOMMENDED FOOD BRANDS',   icon: '🏷️', iconClass: 'icon-green' },
+      { key: 'RECOMMENDED FOOD BRAND',   icon: '🏷️', iconClass: 'icon-green' },
       { key: 'LIFESTYLE & EXERCISE GUIDE',icon: '🏃', iconClass: 'icon-navy'  },
       { key: 'FOODS & RISKS TO AVOID',    icon: '⚠️', iconClass: 'icon-red'   },
     ];
@@ -2189,7 +2189,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       content = content.replace(/(<li>.*<\/li>\n?)+/gs, m=>`<ul>${m}</ul>`);
       content = content.replace(/\n\n+/g,'</p><p>');
       content = `<p>${content}</p>`;
-      const affHtml = s.key.includes('RECOMMENDED FOOD BRANDS') ? renderBrandCards(rawContent) : null;
+      const affHtml = s.key.includes('RECOMMENDED FOOD BRAND') ? renderBrandCards(rawContent) : null;
       const div = document.createElement('div');
       div.className = 'result-section';
       if (affHtml !== null) {
