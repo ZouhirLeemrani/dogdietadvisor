@@ -127,7 +127,7 @@
 
   <url>
     <loc>https://dogdietadvisor.com/blog/beagle-weight-management.html</loc>
-    <lastmod>2026-05-17<lastmod>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -149,6 +149,35 @@
 
   <url>
     <loc>https://dogdietadvisor.com/blog/dachshund-diet-guide.html</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- New Articles — May 2026 -->
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-small-breeds.html</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-arthritis.html</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/homemade-dog-food-guide.html</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-kidney-disease.html</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
