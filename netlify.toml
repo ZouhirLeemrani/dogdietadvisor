@@ -1,15 +1,22 @@
 [build]
   publish = "public"
   functions = "netlify/functions"
-
 [functions]
   node_bundler = "esbuild"
-
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
-
+[[redirects]]
+  from = "/blog"
+  to = "/blog/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/blog/:article"
+  to = "/blog/:article.html"
+  status = 301
+  force = false
 [[headers]]
   for = "/*"
   [headers.values]
