@@ -190,4 +190,25 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-weight-loss.html</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-puppies.html</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-large-breeds.html</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
