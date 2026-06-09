@@ -16,3 +16,4 @@
   for = "/*"
   [headers.values]
     Content-Security-Policy = "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;"
+    X-Robots-Tag = "noai, noimageai"
