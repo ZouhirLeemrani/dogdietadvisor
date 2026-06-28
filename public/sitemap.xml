@@ -211,4 +211,25 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-rottweilers.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-dogs-with-cancer.html</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://dogdietadvisor.com/blog/how-much-water-should-my-dog-drink.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
