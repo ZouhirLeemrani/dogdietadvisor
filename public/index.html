@@ -12,7 +12,10 @@
 <meta name="theme-color" content="#1E3A5F">
 
 <meta name="description" content="Get your dog's personalized nutrition plan in 60 seconds. Food recommendations tailored to your dog's breed, age, weight and health.">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
 <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
 <style>
   :root {
@@ -27,7 +30,7 @@
     --white:      #FFFFFF;
     --off-white:  #F8F9FA;
     --cream:      #F4F1EC;
-    --muted:      #7A8999;
+    --muted: #5A6A7A;
     --text:       #1E3A5F;
     --shadow:     0 4px 24px rgba(30,58,95,0.10);
     --shadow-lg:  0 8px 40px rgba(30,58,95,0.13);
@@ -1481,6 +1484,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
   </nav>
 </header>
 
+<main>
 <!-- HERO -->
 <section class="hero">
   <div class="hero-tag">🐶 Personalized for every breed</div>
@@ -1520,7 +1524,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 
     <div class="field-row">
       <div class="field">
-        <label>Age *</label>
+        <label for="age">Age *</label>
         <select id="age">
           <option value="">Select age</option>
           <option>Puppy (0–1 yr)</option>
@@ -1530,7 +1534,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         </select>
       </div>
       <div class="field">
-        <label>Sex</label>
+        <label for="sex">Sex</label>
         <select id="sex">
           <option value="">Select</option>
           <option>Male (intact)</option>
@@ -1547,7 +1551,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
         <input type="number" id="weight" placeholder="e.g. 28" min="1" max="100" />
       </div>
       <div class="field">
-        <label>Activity Level</label>
+        <label for="activity">Activity Level</label>
         <select id="activity">
           <option value="">Select</option>
           <option>Low (mostly indoors)</option>
@@ -1595,7 +1599,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     </div>
 
     <div class="field">
-      <label>Current Food Type</label>
+      <label for="currentFood">Current Food Type</label>
       <select id="currentFood">
         <option value="Unknown">Not sure / No preference</option>
         <option>Dry kibble</option>
@@ -1676,6 +1680,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 </section>
 
 <!-- FOOTER -->
+</main>
 <footer>
   <p style="margin-bottom:10px;">
     <a href="/blog/" style="background:var(--green);color:white;padding:4px 12px;border-radius:6px;font-weight:700;">📰 Blog</a> ·
