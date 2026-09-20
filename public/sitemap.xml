@@ -246,4 +246,18 @@
     <priority>0.8</priority>
   </url>
   
+    <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-bulldogs.html</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+    <url>
+    <loc>https://dogdietadvisor.com/blog/best-dog-food-for-boxers.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
