@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dog Calorie Calculator: How Much Should My Dog Eat?</title>
+<meta name="description" content="Calculate your dog's exact daily calorie needs in seconds. Enter weight, age, and activity level for a vet-formula calorie target — free to use.">
+<meta name="keywords" content="dog calorie calculator, how many calories does my dog need, dog daily calorie intake, RER dog calories, how much to feed my dog calories">
+<link rel="canonical" href="https://dogdietadvisor.com/blog/dog-calorie-calculator.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{--navy:#1E3A5F;--green:#4A8C6F;--green-dark:#3A7A5E;--green-lite:#EBF5F0;--amber:#E8920A;--amber-lite:#FEF6E8;--cream:#F4F1EC;--white:#FFFFFF;--muted:#5A6A7A;--text:#2A3D52;--red:#C83C3C;--red-lite:#FEF0F0;--shadow:0 4px 24px rgba(30,58,95,0.09);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"DM Sans",sans-serif;background:var(--white);color:var(--text);line-height:1.75;}
+header{background:var(--white);border-bottom:2px solid var(--green-lite);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(30,58,95,0.07);}
+.logo-link{display:flex;align-items:center;text-decoration:none;}
+nav.header-nav{display:flex;align-items:center;gap:12px;}
+.nav-blog-btn{font-size:0.88rem;font-weight:700;color:white !important;text-decoration:none;padding:8px 16px;border-radius:8px;background:#4A8C6F;box-shadow:0 3px 10px rgba(74,140,111,0.35);transition:all 0.2s;white-space:nowrap;}
+.nav-blog-btn:hover{background:#3A7A5E;transform:translateY(-1px);}
+.header-cta{background:#E8920A !important;color:white !important;padding:8px 18px;border-radius:8px;font-weight:700;font-size:0.85rem;text-decoration:none;box-shadow:0 4px 12px rgba(232,146,10,0.4) !important;transition:all 0.2s;white-space:nowrap;}
+.header-cta:hover{background:#D07808 !important;transform:translateY(-1px);}
+.article-hero{padding:64px 20px 56px;text-align:center;}
+.article-hero .category{display:inline-block;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:4px 14px;border-radius:20px;margin-bottom:18px;}
+.article-hero h1{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:white;max-width:780px;margin:0 auto 18px;line-height:1.2;}
+.article-hero .intro{font-size:1rem;color:rgba(255,255,255,0.75);max-width:580px;margin:0 auto 24px;line-height:1.7;}
+.article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:0.78rem;color:rgba(255,255,255,0.55);flex-wrap:wrap;}
+.article-container{max-width:780px;margin:0 auto;padding:40px 20px 80px;}
+.breadcrumb{font-size:0.78rem;color:var(--muted);margin-bottom:32px;}
+.breadcrumb a{color:var(--green);text-decoration:none;}
+.breadcrumb span{margin:0 6px;}
+.article-body h2{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:900;color:var(--navy);margin:48px 0 16px;line-height:1.2;}
+.article-body h3{font-size:1.05rem;font-weight:700;color:var(--navy);margin:28px 0 10px;}
+.article-body p{font-size:1rem;line-height:1.85;color:var(--text);margin-bottom:18px;}
+.article-body ul,.article-body ol{padding-left:22px;margin-bottom:18px;}
+.article-body li{font-size:1rem;line-height:1.8;color:var(--text);margin-bottom:6px;}
+.article-body strong{color:var(--navy);}
+.article-body a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(74,140,111,0.3);}
+.callout{border-radius:12px;padding:20px 24px;margin:28px 0;}
+.callout-green{background:var(--green-lite);border-left:4px solid var(--green);}
+.callout-amber{background:var(--amber-lite);border-left:4px solid var(--amber);}
+.callout-navy{background:#EEF2F7;border-left:4px solid var(--navy);}
+.callout p{margin:0;font-size:0.95rem;line-height:1.7;}
+.callout strong{display:block;margin-bottom:4px;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;}
+/* CALCULATOR */
+.calculator-wrap{background:linear-gradient(135deg,#EBF5F0 0%,#EEF2F7 100%);border:2px solid var(--green);border-radius:16px;padding:32px 28px;margin:32px 0;}
+.calculator-wrap h2{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:900;color:var(--navy);margin:0 0 6px;border:none;padding:0;}
+.calc-subtitle{font-size:0.88rem;color:var(--muted);margin-bottom:24px;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.calc-field{display:flex;flex-direction:column;gap:6px;}
+.calc-field.full{grid-column:1/-1;}
+.calc-field label{font-size:0.82rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;}
+.calc-field input,.calc-field select{padding:10px 14px;border:1.5px solid #C8D8E8;border-radius:8px;font-size:0.95rem;font-family:"DM Sans",sans-serif;color:var(--text);background:var(--white);transition:border-color 0.2s;}
+.calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--green);}
+.unit-toggle{display:flex;border:1.5px solid #C8D8E8;border-radius:8px;overflow:hidden;background:var(--white);}
+.unit-toggle button{flex:1;padding:10px;border:none;background:transparent;font-size:0.88rem;font-family:"DM Sans",sans-serif;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.unit-toggle button.active{background:var(--green);color:white;}
+.calc-btn{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:1rem;font-weight:700;font-family:"DM Sans",sans-serif;cursor:pointer;transition:background 0.2s;margin-top:4px;}
+.calc-btn:hover{background:#2A5080;}
+.calc-result{display:none;background:var(--white);border-radius:12px;padding:24px;margin-top:20px;border:1.5px solid #C8D8E8;}
+.calc-result.visible{display:block;}
+.result-headline{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:16px;}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.result-box{background:var(--cream);border-radius:10px;padding:14px 12px;text-align:center;}
+.result-num{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:900;color:var(--green);display:block;}
+.result-label{font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.result-note{font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.result-cta-btn{display:block;width:100%;text-align:center;background:var(--amber);color:white !important;padding:12px 20px;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;border-bottom:none !important;transition:opacity 0.2s;}
+.result-cta-btn:hover{opacity:0.88;}
+.compare-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.9rem;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+.compare-table thead{background:var(--navy);color:white;}
+.compare-table thead th{padding:12px 16px;text-align:left;font-weight:600;}
+.compare-table tbody tr:nth-child(even){background:var(--cream);}
+.compare-table tbody td{padding:11px 16px;border-bottom:1px solid #E8EFF6;}
+.inline-cta{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border-radius:12px;padding:20px 24px;margin:28px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.inline-cta p{color:white;font-size:0.93rem;margin:0;flex:1;}
+.inline-cta a{display:inline-block;background:white;color:var(--green-dark) !important;padding:10px 20px;border-radius:8px;font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.15);border-bottom:none !important;}
+.divider{height:1px;background:linear-gradient(to right,transparent,#E0E8F0,transparent);margin:40px 0;}
+footer{background:var(--cream);border-top:1px solid #E0E8F0;text-align:center;padding:24px 20px;font-size:0.78rem;color:var(--muted);}
+footer a{color:var(--green);text-decoration:none;font-weight:600;}
+@media(max-width:600px){header{padding:12px 16px;}.article-hero{padding:44px 16px 36px;}.article-container{padding:28px 16px 60px;}.calc-grid{grid-template-columns:1fr;}.result-grid{grid-template-columns:1fr 1fr;}}
+</style>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://dogdietadvisor.com/blog/dog-calorie-calculator.html">
+<meta property="og:title" content="Dog Calorie Calculator: How Much Should My Dog Eat?">
+<meta property="og:description" content="Calculate your dog's exact daily calorie needs in seconds. Enter weight, age, and activity level for a vet-formula calorie target — free to use.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Dog Calorie Calculator: How Much Should My Dog Eat?","description":"Calculate your dog's exact daily calorie needs in seconds. Enter weight, age, and activity level for a vet-formula calorie target — free to use.","author":{"@type":"Organization","name":"DogDietAdvisor"},"publisher":{"@type":"Organization","name":"DogDietAdvisor","url":"https://dogdietadvisor.com"},"url":"https://dogdietadvisor.com/blog/dog-calorie-calculator.html","datePublished":"2026-09-01","dateModified":"2026-09-01","mainEntityOfPage":"https://dogdietadvisor.com/blog/dog-calorie-calculator.html"}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CKQ63CE6HL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-CKQ63CE6HL');</script>
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1471022901339794');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"/></noscript>
+</head>
+<body>
+<header>
+  <a href="https://dogdietadvisor.com" class="logo-link">
+    <span style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.2rem;color:var(--navy);">DogDietAdvisor</span>
+  </a>
+  <nav class="header-nav">
+    <a href="https://dogdietadvisor.com/blog/" class="nav-blog-btn">📰 Blog</a>
+    <a href="https://dogdietadvisor.com" class="header-cta">Get Free Plan →</a>
+  </nav>
+</header>
+
+<div class="article-hero" style="background:linear-gradient(135deg, #1E3A5F 0%, #2A5A3F 100%);">
+  <div class="category" style="background:rgba(255,255,255,0.15);color:#A8D8C0;">🔢 Free Tool · Nutrition Calculator</div>
+  <h1>Dog Calorie Calculator</h1>
+  <p class="intro">How many calories does your dog actually need per day? Enter their details below for an instant, science-based daily calorie target — then learn how to use it.</p>
+  <div class="article-meta">
+    <span>🐾 DogDietAdvisor</span>
+    <span>📅 September 20, 2026</span>
+    <span>⏱ 6 min read</span>
+  </div>
+</div>
+
+<div class="article-container">
+  <div class="breadcrumb">
+    <a href="https://dogdietadvisor.com">Home</a><span>›</span>
+    <a href="https://dogdietadvisor.com/blog/">Blog</a><span>›</span>
+    Dog Calorie Calculator
+  </div>
+
+  <div class="article-body">
+
+    <div class="calculator-wrap">
+      <h2>🔢 Dog Calorie Calculator</h2>
+      <p class="calc-subtitle">Based on the veterinary RER formula (70 × body weight in kg^0.75). Results are a starting point — adjust based on body condition every 2–3 weeks.</p>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label for="calc-weight">Dog's Weight</label>
+          <input type="number" id="calc-weight" placeholder="e.g. 30" min="1" max="300" step="0.5">
+        </div>
+        <div class="calc-field">
+          <label>Unit</label>
+          <div class="unit-toggle">
+            <button class="active" id="btn-lbs" onclick="setUnit('lbs')">lbs</button>
+            <button id="btn-kg" onclick="setUnit('kg')">kg</button>
+          </div>
+        </div>
+        <div class="calc-field">
+          <label for="calc-lifestage">Life Stage</label>
+          <select id="calc-lifestage">
+            <option value="adult">Adult (1–7 years)</option>
+            <option value="puppy">Puppy (under 1 year)</option>
+            <option value="senior">Senior (7+ years)</option>
+            <option value="pregnant">Pregnant</option>
+            <option value="lactating">Lactating</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="calc-neutered">Neutered / Spayed?</label>
+          <select id="calc-neutered">
+            <option value="yes">Yes</option>
+            <option value="no">No (intact)</option>
+          </select>
+        </div>
+        <div class="calc-field full">
+          <label for="calc-activity">Activity Level</label>
+          <select id="calc-activity">
+            <option value="sedentary">Sedentary — mostly indoors, minimal exercise</option>
+            <option value="low">Low — short daily walks (under 30 min)</option>
+            <option value="moderate" selected>Moderate — 30–60 min exercise daily</option>
+            <option value="active">Active — 60–90 min vigorous exercise daily</option>
+            <option value="working">Working / Athletic — 2+ hours intense activity</option>
+          </select>
+        </div>
+        <div class="calc-field full">
+          <label for="calc-goal">Goal</label>
+          <select id="calc-goal">
+            <option value="maintain">Maintain current weight</option>
+            <option value="lose">Lose weight</option>
+            <option value="gain">Gain weight (underweight dog)</option>
+          </select>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calculateCalories()">Calculate Daily Calories →</button>
+      <div class="calc-result" id="calc-result">
+        <p class="result-headline" id="result-headline"></p>
+        <div class="result-grid">
+          <div class="result-box"><span class="result-num" id="result-rer"></span><span class="result-label">RER (resting)</span></div>
+          <div class="result-box"><span class="result-num" id="result-daily"></span><span class="result-label">Daily Target</span></div>
+          <div class="result-box"><span class="result-num" id="result-meals"></span><span class="result-label">Per Meal (2×/day)</span></div>
+        </div>
+        <p class="result-note" id="result-note"></p>
+        <a href="https://dogdietadvisor.com" class="result-cta-btn">Get a Full Personalised Food Plan (Free) →</a>
+      </div>
+    </div>
+
+    <p>Most dog owners have no idea how many calories their dog actually needs — they follow the feeding guide on the bag, which is calibrated for an average active dog and almost always overestimates for neutered, indoor, or less active pets. The calculator above gives you a more precise starting point based on your dog's actual profile.</p>
+
+    <p>Below is everything you need to understand about the result — including how to convert it to cup amounts, how to adjust based on body condition, and why dogs of the same weight can need very different amounts of food.</p>
+
+    <h2>What Is RER and Why Does It Matter?</h2>
+
+    <p>RER stands for Resting Energy Requirement — the calories your dog needs just to stay alive at rest. It covers breathing, circulation, digestion, and cell repair. The veterinary formula is <strong>70 × (body weight in kg)^0.75</strong>. The calculator then multiplies this by a life stage factor based on your dog's age, reproductive status, activity, and goal.</p>
+
+    <p>Feeding guides on kibble bags typically use a multiplier of 1.8–2.0×. A neutered, indoor adult only needs 1.2–1.6×. That gap — small as it sounds — produces meaningful overfeeding over months and years and is the leading cause of gradual weight gain in dogs.</p>
+
+    <h2>The Multipliers Used in This Calculator</h2>
+
+    <table class="compare-table">
+      <thead><tr><th>Dog Profile</th><th>Multiplier (× RER)</th><th>Example — 30 lbs (14 kg) dog</th></tr></thead>
+      <tbody>
+        <tr><td>Neutered adult, sedentary</td><td>1.2</td><td>~595 kcal/day</td></tr>
+        <tr><td>Intact adult, sedentary</td><td>1.4</td><td>~693 kcal/day</td></tr>
+        <tr><td>Neutered adult, moderate activity</td><td>1.6</td><td>~792 kcal/day</td></tr>
+        <tr><td>Intact adult, moderate activity</td><td>1.8</td><td>~891 kcal/day</td></tr>
+        <tr><td>Active adult (60–90 min/day)</td><td>2.0</td><td>~990 kcal/day</td></tr>
+        <tr><td>Working / athletic dog</td><td>2.5</td><td>~1,237 kcal/day</td></tr>
+        <tr><td>Puppy (under 4 months)</td><td>3.0</td><td>~1,485 kcal/day</td></tr>
+        <tr><td>Puppy (4+ months to adult)</td><td>2.0</td><td>~990 kcal/day</td></tr>
+        <tr><td>Weight loss</td><td>1.0</td><td>~495 kcal/day</td></tr>
+        <tr><td>Weight gain (underweight)</td><td>1.7</td><td>~842 kcal/day</td></tr>
+        <tr><td>Pregnant (last trimester)</td><td>3.0</td><td>~1,485 kcal/day</td></tr>
+        <tr><td>Lactating</td><td>4.0</td><td>~1,980 kcal/day</td></tr>
+      </tbody>
+    </table>
+
+    <h2>How to Convert Calories to Cup Amounts</h2>
+
+    <p>Once you have your daily calorie target, converting to cup amounts takes one more step:</p>
+    <ol>
+      <li><strong>Find the kcal/cup on your food's packaging</strong> — usually on the back panel near the feeding guide</li>
+      <li><strong>Divide daily target by kcal/cup</strong> — this gives cups per day</li>
+      <li><strong>Divide by 2</strong> — for each of two daily meals</li>
+    </ol>
+
+    <div class="callout callout-green">
+      <p><strong>✅ Example</strong>Your dog needs 750 kcal/day. Your kibble is 375 kcal/cup. 750 ÷ 375 = 2 cups/day → 1 cup per meal. Most bag guides would suggest 2.5–3 cups for the same dog — that's a 25–50% overestimate.</p>
+    </div>
+
+    <p><strong>Use a kitchen scale over measuring cups.</strong> A "cup" of different kibbles can vary by up to 30% in gram weight depending on kibble size and density. Grams are precise, cups are not. For the full feeding calculation method, see our <a href="/blog/how-much-should-i-feed-my-dog.html" target="_blank" rel="noopener">complete feeding guide</a>.</p>
+
+    <h2>Adjusting Based on Body Condition</h2>
+
+    <p>The calculator gives a starting point. Your dog's body condition response over 2–3 weeks is the real data. <strong>Weigh your dog every 2 weeks</strong> and use the rib test monthly.</p>
+
+    <ul>
+      <li><strong>Losing more than 1–2% body weight per week</strong> — increase by 10% and recheck</li>
+      <li><strong>Gaining weight on maintenance target</strong> — reduce by 10% and recheck</li>
+      <li><strong>Weight stable at healthy body condition</strong> — you've found the right amount</li>
+    </ul>
+
+    <div class="callout callout-amber">
+      <p><strong>⚠️ The rib test</strong>Place both hands on your dog's ribcage. You should feel individual ribs easily with light pressure — like the back of your hand. If you have to press firmly, your dog is overweight. If ribs are visible without touching, they're underweight. More reliable than scale weight alone because muscle weighs more than fat.</p>
+    </div>
+
+    <p>For dogs that need to lose weight, see our <a href="/blog/best-dog-food-for-weight-loss.html" target="_blank" rel="noopener">weight loss food guide</a> for the foods and strategies that work best alongside calorie reduction.</p>
+
+    <div class="inline-cta">
+      <p>🐾 Want food recommendations matched to your dog's calorie target? Get a free personalised plan with specific brand suggestions.</p>
+      <a href="https://dogdietadvisor.com" target="_blank">Get My Dog's Free Plan →</a>
+    </div>
+
+    <h2>Why Two Dogs of the Same Weight Need Different Calories</h2>
+
+    <ul>
+      <li><strong>Neutering status</strong> — neutered dogs need 20–25% fewer calories due to reduced metabolic rate</li>
+      <li><strong>Breed metabolism</strong> — Huskies need far fewer calories per pound than Labradors; Greyhounds need more than Bulldogs</li>
+      <li><strong>Body composition</strong> — muscle burns more calories at rest than fat; a lean dog needs more food than an overweight dog of the same weight</li>
+      <li><strong>Food digestibility</strong> — a highly digestible food delivers more usable nutrition per calorie than a poorly digestible one</li>
+      <li><strong>Individual metabolism</strong> — just like humans, individual variation is real and can account for 15–20% difference between dogs with identical profiles</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>How accurate is this dog calorie calculator?</h3>
+    <p>The RER formula is used by veterinary nutritionists worldwide and is the most validated approach to estimating canine caloric needs. For most dogs, the result is accurate to within 15–20% — a meaningful starting point. Individual dogs may need adjustment up or down, which is why the 2-week body condition check is essential. No calculator replaces observation of your specific dog.</p>
+
+    <h3>My vet gave me a different number — which should I use?</h3>
+    <p>Always follow your vet's recommendation. Your vet has examined your dog and may be accounting for health factors a general calculator cannot. Use this calculator as a reference if you haven't received specific guidance from your vet — not to override professional advice.</p>
+
+    <h3>Does food type affect how many calories my dog needs?</h3>
+    <p>The daily calorie target stays the same regardless of food type — but the volume of food changes significantly. Wet food contains 70–80% moisture and provides roughly 80–100 kcal per 100g. Dry kibble at 10% moisture provides 340–380 kcal per 100g. A dog needing 750 kcal/day needs about 800g of wet food but only about 200g of dry kibble. See our <a href="/blog/dry-vs-wet-dog-food.html" target="_blank" rel="noopener">dry vs wet food guide</a> for the full breakdown.</p>
+
+    <h3>Should I count treat calories?</h3>
+    <p>Yes — most owners underestimate this significantly. Treats should be no more than 10% of daily calorie intake. For a dog on 600 kcal/day, that's only 60 kcal in treats — about 3 standard medium biscuits. Pull treat calories from the daily meal total rather than adding them on top. The easiest approach: use a portion of daily kibble as training treats.</p>
+
+    <h3>How often should I recalculate?</h3>
+    <p>Recalculate whenever your dog's weight changes by more than 5 lbs (2.3 kg), their activity level changes seasonally, or they transition life stages (puppy to adult, adult to senior). For puppies, recalculate monthly as they grow rapidly. For stable adult dogs, a check every 3–6 months is sufficient. Always recalculate after a health event that changes activity or metabolism.</p>
+
+    <h3>My dog is the right weight but always hungry — what do I do?</h3>
+    <p>If body condition confirms healthy weight, hunger is usually a fibre and volume issue rather than a calorie issue. Switch to a higher-fibre food, add plain canned pumpkin (1 tsp per 10 lbs / 4.5 kg of body weight), or split the daily ration into 3 meals instead of 2. See our <a href="/blog/best-dog-food-for-weight-loss.html" target="_blank" rel="noopener">weight management guide</a> for more satiety strategies.</p>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <strong>DogDietAdvisor.com</strong> — <a href="https://dogdietadvisor.com">Home</a> · <a href="https://dogdietadvisor.com/blog/">Blog</a> · <a href="https://dogdietadvisor.com">Privacy Policy</a> · <a href="https://dogdietadvisor.com">Affiliate Disclosure</a></p>
+</footer>
+
+<script>
+let currentUnit='lbs';
+function setUnit(unit){
+  currentUnit=unit;
+  document.getElementById('btn-lbs').classList.toggle('active',unit==='lbs');
+  document.getElementById('btn-kg').classList.toggle('active',unit==='kg');
+  document.getElementById('calc-weight').placeholder=unit==='lbs'?'e.g. 30':'e.g. 14';
+}
+function calculateCalories(){
+  const weightInput=parseFloat(document.getElementById('calc-weight').value);
+  const lifestage=document.getElementById('calc-lifestage').value;
+  const neutered=document.getElementById('calc-neutered').value;
+  const activity=document.getElementById('calc-activity').value;
+  const goal=document.getElementById('calc-goal').value;
+  if(!weightInput||weightInput<=0){alert("Please enter your dog's weight.");return;}
+  const weightKg=currentUnit==='lbs'?weightInput*0.453592:weightInput;
+  const weightLbs=currentUnit==='lbs'?weightInput:(weightInput*2.20462);
+  const rer=Math.round(70*Math.pow(weightKg,0.75));
+  let multiplier=1.6,goalNote='';
+  if(goal==='lose'){
+    multiplier=1.0;
+    goalNote='Weight loss target — aim to lose no more than 1–2% body weight per week. Monitor every 2 weeks and adjust as needed.';
+  } else if(goal==='gain'){
+    multiplier=1.7;
+    goalNote='Weight gain target — recheck body condition monthly and transition to maintenance once ideal weight is reached.';
+  } else {
+    if(lifestage==='puppy'){
+      multiplier=weightKg<4?3.0:2.0;
+      goalNote='Puppy calorie needs are significantly higher per kg than adults. Weigh food precisely and compare to breed growth charts.';
+    } else if(lifestage==='senior'){
+      multiplier=neutered==='yes'?1.2:1.4;
+      goalNote='Senior dogs typically need 10–20% fewer calories. Monitor muscle mass — prevent muscle loss while managing weight.';
+    } else if(lifestage==='pregnant'){
+      multiplier=3.0;
+      goalNote='Pregnant dogs (last trimester) need up to 3× RER. Feed a high-quality puppy or all life stages formula.';
+    } else if(lifestage==='lactating'){
+      multiplier=4.0;
+      goalNote='Lactating dogs have the highest calorie needs of any adult dog. Feed freely — do not restrict calories during nursing.';
+    } else {
+      const m={sedentary:neutered==='yes'?1.2:1.4,low:neutered==='yes'?1.4:1.6,moderate:neutered==='yes'?1.6:1.8,active:2.0,working:2.5};
+      multiplier=m[activity]||1.6;
+      goalNote='Maintenance target. Adjust by ±10% every 2 weeks based on body condition. Recheck body condition monthly.';
+    }
+  }
+  const daily=Math.round(rer*multiplier);
+  const perMeal=Math.round(daily/2);
+  document.getElementById('result-headline').textContent=weightLbs.toFixed(0)+' lbs ('+weightKg.toFixed(1)+' kg) dog — daily calorie target';
+  document.getElementById('result-rer').textContent=rer+' kcal';
+  document.getElementById('result-daily').textContent=daily+' kcal';
+  document.getElementById('result-meals').textContent=perMeal+' kcal';
+  document.getElementById('result-note').textContent=goalNote;
+  const el=document.getElementById('calc-result');
+  el.classList.add('visible');
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
