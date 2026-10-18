@@ -11,9 +11,9 @@
   status = 200
 
 [[redirects]]
-  from = "/blog/:article"
+  from = "/blog/:article.html"
   to = "/blog/:article.html"
-  status = 301
+  status = 200
   force = false
 
 [[headers]]
