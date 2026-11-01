@@ -61,7 +61,6 @@ exports.handler = async (event) => {
     <div style="margin-top:28px;padding:18px 20px;background:#EBF5F0;border-radius:10px;border:1px solid rgba(74,140,111,0.2);">
       <p style="margin:0 0 12px;font-size:14px;color:#3A7A5E;font-weight:600;">🛒 Shop recommended brands</p>
       <a href="https://chewy.sjv.io/4arv0n" style="display:inline-block;background:#4A8C6F;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin-right:8px;">Chewy</a>
-      <a href="https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20" style="display:inline-block;background:#E8920A;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;">Amazon</a>
     </div>
     <p style="margin-top:24px;font-size:12px;color:#B0BECA;text-align:center;">
       ⚠️ This plan is for general wellness guidance only — not a substitute for veterinary advice.<br>

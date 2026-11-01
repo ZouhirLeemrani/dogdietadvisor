@@ -1875,7 +1875,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     <ul>
       <li><strong>Anthropic Claude API</strong> — processes your dog's profile to generate nutrition advice. See <a href="https://anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a>.</li>
       <li><strong>Netlify</strong> — hosts our website. See <a href="https://netlify.com/privacy" target="_blank">Netlify's Privacy Policy</a>.</li>
-      <li><strong>Amazon Associates / Chewy / Petco</strong> — affiliate partners. Clicking their links may set cookies on their sites.</li>
+      <li><strong>Chewy / Petco</strong> — affiliate partners. Clicking their links may set cookies on their sites.</li>
     </ul>
 
     <h2>Your Rights (GDPR)</h2>
@@ -1901,14 +1901,13 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
     </div>
 
     <h2>How It Works</h2>
-    <p>When our nutrition plans recommend specific dog food brands, we include links to purchase those products on Amazon, Chewy, and Petco. If you click one of these links and make a purchase, we receive a small commission from the retailer.</p>
+    <p>When our nutrition plans recommend specific dog food brands, we include links to purchase those products on Chewy and Petco. If you click one of these links and make a purchase, we receive a small commission from the retailer.</p>
 
     <h2>Our Commitment to Honest Recommendations</h2>
     <p>Affiliate commissions do not influence our recommendations. Our nutrition plans are generated based solely on your dog's profile — breed, age, weight, health conditions, and budget. We recommend products because they are genuinely suited to your dog, not because of commission rates.</p>
 
     <h2>Affiliate Programs We Participate In</h2>
     <ul>
-      <li><strong>Amazon Associates Program</strong> — As an Amazon Associate, DogDietAdvisor earns from qualifying purchases.</li>
       <li><strong>Chewy Affiliate Program</strong> — We may earn commissions on purchases made through Chewy links.</li>
       <li><strong>Petco Affiliate Program</strong> — We may earn commissions on purchases made through Petco links.</li>
     </ul>
@@ -2116,7 +2115,6 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
 
   function renderBrandCards(rawContent) {
     const chewyUrl = 'https://chewy.sjv.io/4arv0n';
-    const amazonUrl = 'https://www.amazon.com/s?k=dog+food&tag=dogdietadviso-20';
 
     // Strip bold markers from the whole content first
     const clean = rawContent.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1');
@@ -2128,7 +2126,6 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       return `<div class="affiliate-strip">
           <div class="aff-label">Shop recommended brands</div>
           <a class="affiliate-link" href="${chewyUrl}" target="_blank">🛒 Chewy</a>
-          <a class="affiliate-link" href="${amazonUrl}" target="_blank">📦 Amazon</a>
         </div>`;
     }
 
@@ -2148,7 +2145,6 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
       const tags = rawTags.split(/[,;]/).map(t => t.trim()).filter(Boolean);
 
       const tagHtml = tags.map(t => `<span class="brand-tag">${t}</span>`).join('');
-      const searchQ = encodeURIComponent(name.split('(')[0].trim());
 
       html += `
         <div class="brand-card">
@@ -2159,8 +2155,7 @@ src="https://www.facebook.com/tr?id=1471022901339794&ev=PageView&noscript=1"
             ${tagHtml ? `<div class="brand-tags">${tagHtml}</div>` : ''}
             <div class="brand-shop">
               <span class="brand-shop-label">🛒 Shop this brand:</span>
-              <a class="brand-btn chewy" href="https://www.chewy.com/s?query=${searchQ}" target="_blank">Chewy</a>
-              <a class="brand-btn amazon" href="https://www.amazon.com/s?k=${searchQ}&tag=dogdietadviso-20" target="_blank">Amazon</a>
+              <a class="brand-btn chewy" href="${chewyUrl}" target="_blank" rel="nofollow sponsored noopener">Chewy</a>
             </div>
           </div>
         </div>`;
